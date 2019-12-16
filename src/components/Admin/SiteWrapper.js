@@ -47,7 +47,7 @@ const SiteWrapper = ({
                 </div>
 			</Content>
 			<Footer style={{ textAlign: 'center' }}>
-				Tormenta ©{new Date().getFullYear()} | By TronWeb
+                Tormenta ©{new Date().getFullYear()} | By <a href="https://www.tronweb.it">TronWeb</a>
 			</Footer>
 		</Layout>
 	</Layout>
