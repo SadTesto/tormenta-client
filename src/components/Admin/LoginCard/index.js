@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import LoginForm from './LoginForm';
 
-const LoginCard = props => (
+const LoginCard = ({ authAdmin }) => (
 	<Formik
 		initialValues={{
 			username: '',
@@ -21,8 +21,9 @@ const LoginCard = props => (
 			return errors;
 		}}
 		onSubmit={(values, { setSubmitting, setErrors }) => {
-            setErrors({ username: 'idk lol just stfu'});
-            console.log(values);
+            authAdmin('Sad', 'Testo')
+                .catch(err => setErrors({ username: err.message }))
+                .finally(() => setSubmitting(false));
 		}}
 	>
 		{({ values, errors, handleChange, handleSubmit, isSubmitting }) => (
@@ -36,5 +37,9 @@ const LoginCard = props => (
 		)}
 	</Formik>
 );
+
+LoginCard.propTypes = {
+    authAdmin: PropTypes.func.isRequired
+};
 
 export default LoginCard;

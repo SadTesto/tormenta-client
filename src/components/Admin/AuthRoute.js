@@ -1,30 +1,36 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 
-const AuthRoute = ({ user, ...rest }) => (
-	<Route
-		{...rest}
-		render={props =>
-			user.authed === true ? (
-				<Component {...props} />
-			) : (
-				<Redirect
-					to={{
-						pathname: '/login',
-						state: {
-							from: props.location,
-							message: 'Autenticazione richiesta'
-						}
-					}}
-				/>
-			)
-		}
-	/>
+const AuthRoute = ({ component: Component, admin, ...rest }) => (
+    <Route
+        {...rest}
+        render={props =>
+            admin.authed === true ? (
+                <Component {...props} />
+            ) : (
+                <Redirect
+                    to={{
+                        pathname: "/login",
+                        state: {
+                            from: props.location,
+                            message: "Autenticazione richiesta"
+                        }
+                    }}
+                />
+            )
+        }
+    />
 );
 
 AuthRoute.propTypes = {
-    user: PropTypes.object,
+    admin: PropTypes.object.isRequired,
+    component: PropTypes.any.isRequired
 };
 
-export default AuthRoute;
+const mapStateToProps = state => ({
+    admin: state.admin
+});
+
+export default connect(mapStateToProps)(AuthRoute);

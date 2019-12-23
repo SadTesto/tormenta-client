@@ -48,7 +48,7 @@ const LoginForm = ({
             <Checkbox
                 id="rememberMe"
                 name="rememberMe"
-                value={values.rememberMe}
+                checked={values.rememberMe}
                 onChange={handleChange}
             >
                 Remember me
@@ -64,5 +64,12 @@ const LoginForm = ({
         </Form.Item>
     </Form>
 );
+
+LoginForm.propTypes = {
+    values: PropTypes.object.isRequired,
+	errors: PropTypes.object.isRequired,
+	handleChange: PropTypes.func.isRequired,
+	handleSubmit: PropTypes.func.isRequired
+}
 
 export default LoginForm;

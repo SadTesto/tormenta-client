@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { logout } from '../../actions/adminActions';
 import { Link } from 'react-router-dom';
 import { Layout, Menu, Icon, PageHeader } from 'antd';
 
@@ -10,6 +12,8 @@ const SiteWrapper = ({
     navItems, 
     title,
     subtitle,
+    logout,
+    admin,
     children 
 }) => (
 	<Layout style={{ height: '100%' }}>
@@ -26,6 +30,15 @@ const SiteWrapper = ({
                         </Link>
                     </Menu.Item>
 				))}
+                <Menu.Item>
+                    <Icon type="sign-out"/>
+                    <span 
+                        className="nav-text"
+                        onClick={logout}
+                    >
+                        Logout
+                    </span>
+                </Menu.Item>
 			</Menu>
 		</Sider>
 		<Layout>
@@ -58,7 +71,13 @@ SiteWrapper.propTypes = {
     navItems: PropTypes.array.isRequired,
     title: PropTypes.string.isRequired,
     subtitle: PropTypes.string,
+    admin: PropTypes.object,
+    logout: PropTypes.func.isRequired,
 	children: PropTypes.any
 };
 
-export default SiteWrapper;
+const mapStateToProps = state => ({
+    admin: state.admin
+});
+
+export default connect(mapStateToProps, { logout })(SiteWrapper);
