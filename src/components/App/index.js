@@ -26,9 +26,9 @@ const getTitle = pathname => {
 };
 
 const getId = pathname => {
-	let item = NavItems.find(({ text }) => text === getTitle(pathname));
+    let item = NavItems.find(({ text }) => text === getTitle(pathname));
 	if (!item) {
-		item = { id: 0 };
+		item = { id: -1 };
     }
 	return item.id;
 };

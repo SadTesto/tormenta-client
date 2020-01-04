@@ -1,13 +1,11 @@
 import React, { Fragment, useState } from 'react';
-import { Row, Col, Card, Steps, Button } from 'antd';
-import TournamentForm from '../Admin/TournamentForm/';
-import HelpCard from '../Admin/HelpCard';
+import { Row, Col, Steps } from 'antd';
+import StepsSwitch from '../Admin/StepsSwitch/';
 
 const { Step } = Steps;
 
 const NewTournament = () => {
     const [step, setStep] = useState(0);
-    const moveOn = () => setStep(step + 1);
     return (
         <Fragment>
             <Row>
@@ -20,25 +18,8 @@ const NewTournament = () => {
                 </Col>
             </Row>
             <Row>
-                <Col span={24} md={10}>
-                    <Card 
-                        title="Informazioni" 
-                        bordered={true}
-                    >
-                        <TournamentForm />
-                    </Card>
-                </Col>
-                <Col span={24} md={8}>
-                    <HelpCard
-                        message={
-                            'Per iniziare inserisci le informazioni di base quali titolo del '+
-                            'torneo e numero totale di squadre partecipanti (fonamentale per ' +
-                            'poter generare i gironi e le partite del torneo)'
-                        }
-                    />
-                </Col>
+                <StepsSwitch step={step} nextStep={() => setStep(step + 1)} />
             </Row>
-            <Button onClick={moveOn}>Next</Button>
         </Fragment>
     );
 };

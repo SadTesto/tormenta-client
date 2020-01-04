@@ -8,7 +8,7 @@ import LoginCard from '../Admin/LoginCard';
 
 const { Content, Footer } = Layout;
 
-const Login = ({ admin, authAdmin }) => 
+const Login = ({ admin, authAdmin, location }) => 
     admin.authed !== true ? (
         <Layout style={{ height: '100%', display: 'flex' }}>
             <Content>
@@ -36,11 +36,11 @@ const Login = ({ admin, authAdmin }) =>
                 </div>
             </Content>
             <Footer style={{ textAlign: 'center' }}>
-                Tormenta ©{new Date().getFullYear()} | By <a href="https://www.tronweb.it">TronWeb</a>
+                Tormenta © {new Date().getFullYear()} | By <a href="https://www.tronweb.it">TronWeb</a>
             </Footer>
         </Layout>
     ) : (
-        <Redirect to={{ pathname: '/' }}/>
+        <Redirect to={{ pathname: location.state.from.pathname || '/' }}/>
     );
 
 Login.propTypes = {

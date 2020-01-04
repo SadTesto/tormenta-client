@@ -19,7 +19,11 @@ const SiteWrapper = ({
 	<Layout style={{ height: '100%' }}>
 		<Sider breakpoint='md' collapsedWidth='0'>
 			<div className='logo' />
-			<Menu theme='dark' mode='inline' defaultSelectedKeys={[String(navItemSelected)]}>
+            <Menu 
+                theme='dark' 
+                mode='inline' 
+                selectedKeys={[String(navItemSelected)]}
+            >
                 <Menu.Item disabled={true}>
                     <span className='nav-text'>
                         {admin.username}
@@ -64,7 +68,7 @@ const SiteWrapper = ({
                 </div>
 			</Content>
 			<Footer style={{ textAlign: 'center' }}>
-                Tormenta ©{new Date().getFullYear()} | By <a href="https://www.tronweb.it">TronWeb</a>
+                Tormenta © {new Date().getFullYear()} | By <a href="https://www.tronweb.it">TronWeb</a>
 			</Footer>
 		</Layout>
 	</Layout>

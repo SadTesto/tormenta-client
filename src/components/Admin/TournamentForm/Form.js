@@ -22,6 +22,18 @@ const TForm = ({
     >
         <Form.Item
             style={{ marginBottom: 5 }}
+            label="Identificativo del torneo"
+        >
+            <Input
+                id="id"
+                name="id"
+                type="text"
+                placeholder="Generato automaticamente"
+                disabled={true}
+            />
+        </Form.Item>
+        <Form.Item
+            style={{ marginBottom: 5 }}
             validateStatus={errors.title ? 'error' : ''}
             help={errors.title || ''}
             label="Titolo del torneo"

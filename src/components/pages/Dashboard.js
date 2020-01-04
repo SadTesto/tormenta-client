@@ -1,20 +1,12 @@
-import React, { useState, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Row, Col } from 'antd';
 import TournamentInfo from '../Admin/TournamentInfo';
-import AdminAlert from '../Admin/AdminAlert';
 
 const Dashboard = ({ tournament }) => {
-    const [error, setError] = useState(null);
     return (
         <Fragment>
-            <AdminAlert
-                display={error !== null}
-                title="Errore 2"
-                message={error}
-                type="error"
-            />
             <Row>
                 <Col span={24} md={10}>
                     <TournamentInfo
