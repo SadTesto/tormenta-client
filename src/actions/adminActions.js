@@ -5,12 +5,10 @@ import {
     ADMIN_LOGOUT
 } from './types';
 import axios from 'axios';
-axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
 const API_URL = 'http://dev.tronweb.it/tormenta-server';
 
 export const authAdmin = (username, password) => dispatch => {
-
     dispatch({
         type: AUTH_ADMIN_PENDING,
         payload: 'auth'
@@ -21,7 +19,8 @@ export const authAdmin = (username, password) => dispatch => {
             username,
             password
         })
-            .then(({ data }) => {
+            .then(({ data, request }) => {
+                console.log(request);
                 if (data.code === 1) {
                     dispatch({
                         type: ADMIN_AUTHED,
@@ -34,6 +33,10 @@ export const authAdmin = (username, password) => dispatch => {
             })
             .catch(err => {
                 const { response } = err;
+                console.log(err);
+                console.log(err.response);
+                console.log(err.request);
+                console.log(err.config);
                 if (response && response.data && response.data.message) {
                     err.message = response.data.message;
                 }

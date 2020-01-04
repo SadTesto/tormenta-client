@@ -20,6 +20,12 @@ const SiteWrapper = ({
 		<Sider breakpoint='md' collapsedWidth='0'>
 			<div className='logo' />
 			<Menu theme='dark' mode='inline' defaultSelectedKeys={[String(navItemSelected)]}>
+                <Menu.Item disabled={true}>
+                    <span className='nav-text'>
+                        {admin.username}
+                    </span>
+                </Menu.Item>
+
 				{navItems.map(({ id, icon, text, location }) => (
                     <Menu.Item key={id}>
                         <Link to={{ pathname: location }} key={id}>
@@ -30,12 +36,10 @@ const SiteWrapper = ({
                         </Link>
                     </Menu.Item>
 				))}
-                <Menu.Item>
-                    <Icon type="sign-out"/>
-                    <span 
-                        className="nav-text"
-                        onClick={logout}
-                    >
+
+                <Menu.Item onClick={logout}>
+                    <Icon type="logout" />
+                    <span className="nav-text">
                         Logout
                     </span>
                 </Menu.Item>

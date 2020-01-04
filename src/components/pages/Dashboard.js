@@ -1,33 +1,28 @@
 import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Row, Col, Card, Alert } from 'antd';
+import { Row, Col } from 'antd';
 import TournamentInfo from '../Admin/TournamentInfo';
+import AdminAlert from '../Admin/AdminAlert';
 
 const Dashboard = ({ tournament }) => {
     const [error, setError] = useState(null);
     return (
         <Fragment>
-            {error ? (
-                <Row>
-                    <Col span={24}>
-                        <Alert
-                            message="Errore"
-                            description={error}
-                            type="error"
-                            showIcon
-                        />
-                    </Col>
-                </Row>
-            ) : null}
+            <AdminAlert
+                display={error !== null}
+                title="Errore 2"
+                message={error}
+                type="error"
+            />
             <Row>
                 <Col span={24} md={10}>
                     <TournamentInfo
                         tournament={tournament}
-                        setError={setError}
+                        loading={tournament.pendings.info === true}
                     />
                 </Col>
-                <Col span={24} md={10}>
+                {/* <Col span={24} md={10}>
                     <Card title="Playoff" bordered={true}>
                         <div className="c1">
                             <div className="team">1</div>
@@ -47,7 +42,7 @@ const Dashboard = ({ tournament }) => {
                             <div className="block">winner</div>
                         </div>
                     </Card>
-                </Col>
+                </Col> */}
             </Row>
         </Fragment>
     );
