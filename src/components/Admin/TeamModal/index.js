@@ -2,28 +2,36 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'antd';
 import { Formik } from 'formik';
-import NewTeamForm from './NewTeamForm';
+import TeamForm from './TeamForm';
 
-const NewTeamModal = ({ title, visible, onOk, showModal }) => (
+const TeamModal = ({
+	title,
+	visible,
+	team = { id: null, name: null },
+	onOk,
+	showModal
+}) => (
 	<Modal
 		title={title}
 		visible={visible}
 		onOk={onOk}
-        onCancel={() => showModal(false)}
-        footer={<Fragment></Fragment>}
+		onCancel={() => showModal(false)}
+		footer={<Fragment></Fragment>}
 	>
 		<Formik
 			initialValues={{
-				name: ''
+				id: team.id || '',
+				name: team.name || ''
 			}}
 			onSubmit={(values, { setSubmitting, setErrors }) => {
-                alert('Added new team');
+				alert('Added new team');
 				showModal(false);
 			}}
-			onReset={() => showModal(false)}
+            onReset={() => showModal(false)}
+            enableReinitialize={true}
 		>
 			{({ values, errors, handleSubmit, handleReset, handleChange }) => (
-				<NewTeamForm
+				<TeamForm
 					values={values}
 					errors={errors}
 					handleSubmit={handleSubmit}
@@ -35,11 +43,12 @@ const NewTeamModal = ({ title, visible, onOk, showModal }) => (
 	</Modal>
 );
 
-NewTeamModal.propTypes = {
+TeamModal.propTypes = {
 	title: PropTypes.string.isRequired,
 	visible: PropTypes.bool.isRequired,
+	team: PropTypes.object,
 	onOk: PropTypes.func.isRequired,
 	showModal: PropTypes.func.isRequired
 };
 
-export default NewTeamModal;
+export default TeamModal;

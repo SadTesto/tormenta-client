@@ -14,6 +14,8 @@ import Login from '../pages/Login';
 import Dashboard from '../pages/Dashboard';
 import Settings from '../pages/Settings';
 import NewTournament from '../pages/NewTournament';
+import Teams from '../pages/Teams';
+import Matches from '../pages/Matches';
 import NotFound from '../pages/NotFound';
 
 const getTitle = pathname => {
@@ -61,6 +63,16 @@ const App = () => (
                                     <Route
                                         path="/"
                                         component={Dashboard}
+                                        exact
+                                    />
+                                    <Route
+                                        path="/squadre"
+                                        component={Teams}
+                                        exact
+                                    />
+                                    <Route
+                                        path="/partite"
+                                        component={Matches}
                                         exact
                                     />
                                     <Route

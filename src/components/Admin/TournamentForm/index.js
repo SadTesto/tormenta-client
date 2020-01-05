@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import Form from './Form';
 
-const TournamentForm = ({ afterSubmit }) => (
+const TournamentForm = ({ beforeSubmit, afterSubmit }) => (
 	<Formik
         initialValues={{
             id: '',
@@ -21,6 +21,7 @@ const TournamentForm = ({ afterSubmit }) => (
             return errors;
         }}
         onSubmit={(values, { setSubmitting, setErrors }) => {
+            beforeSubmit();
             // authAdmin(values.username, values.password)
             //     .catch(err => setErrors({ username: err.message }))
             //     .finally(() => setSubmitting(false));
@@ -41,6 +42,7 @@ const TournamentForm = ({ afterSubmit }) => (
 );
 
 TournamentForm.propTypes = {
+    beforeSubmit: PropTypes.func,
     afterSubmit: PropTypes.func
 };
 

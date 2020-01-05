@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Button } from 'antd';
 
-const NewTeamForm = ({
+const TeamForm = ({
     values,
     errors,
     handleChange,
@@ -34,7 +34,7 @@ const NewTeamForm = ({
     </Form>
 );
 
-NewTeamForm.propTypes = {
+TeamForm.propTypes = {
     values: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
     handleChange: PropTypes.func.isRequired,
@@ -42,4 +42,4 @@ NewTeamForm.propTypes = {
     handleReset: PropTypes.func.isRequired
 };
 
-export default NewTeamForm;
+export default TeamForm;

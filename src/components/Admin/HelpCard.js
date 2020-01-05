@@ -22,17 +22,15 @@ const HelpCard = ({ message }) => {
                 </Button>
             )}
         >
-            <Paragraph>
-                Per iniziare inserisci le informazioni di base quali titolo del 
-                torneo e numero totale di squadre partecipanti (fonamentale per 
-                poter generare i gironi e le partite del torneo)
-            </Paragraph>
+            {message.map(msg => (
+                <Paragraph>{msg}</Paragraph>
+            ))}
         </Card>
     );
 };
 
 HelpCard.propTypes = {
-    message: PropTypes.string.isRequired
+    message: PropTypes.array.isRequired
 };
 
 export default HelpCard;

@@ -14,6 +14,7 @@ const SiteWrapper = ({
     subtitle,
     logout,
     admin,
+    tournament,
     children 
 }) => (
 	<Layout style={{ height: '100%' }}>
@@ -31,7 +32,7 @@ const SiteWrapper = ({
                 </Menu.Item>
 
 				{navItems.map(({ id, icon, text, location }) => (
-                    <Menu.Item key={id}>
+                    <Menu.Item key={id} disabled={id !== 1 && tournament.id === null}>
                         <Link to={{ pathname: location }} key={id}>
                             <Icon type={icon} />
                             <span className='nav-text'>
@@ -85,6 +86,7 @@ SiteWrapper.propTypes = {
 };
 
 const mapStateToProps = state => ({
+    tournament: state.tournament,
     admin: state.admin
 });
 

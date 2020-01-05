@@ -1,249 +1,266 @@
-import React, { Fragment } from 'react';
-// import PropTypes from 'prop-types';
-import { Card, Table, Button } from 'antd';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Card, Table, Button, Divider, Popconfirm } from 'antd';
 
-const TeamsTable = () => {
+const TeamsTable = ({ editTeam, deleteTeam }) => {
 	const columns = [
 		{
 			title: '#',
-            dataIndex: 'number'
+			dataIndex: 'id'
 		},
 		{
 			title: 'Nome',
-            dataIndex: 'name'
+			dataIndex: 'name'
 		},
 		{
 			title: 'Azioni',
-            dataIndex: 'actions',
-            render: () => (
-                <Fragment>
-                    <Button type="link">Modifica</Button>
-                    <Button type="link">Elimina</Button>
-                </Fragment>
-            )
+			dataIndex: 'actions',
+			render: (text, record) => (
+				<span>
+					<Button
+						type="link"
+						onClick={() =>
+							editTeam({
+								id: record.id,
+								name: record.name
+							})
+						}
+					>
+						Modifica
+					</Button>
+					<Divider type="vertical" />
+					<Popconfirm
+						title="Confermi?"
+						okText="Si"
+						cancelText="No"
+						onConfirm={() => deleteTeam(record.id)}
+					>
+						<Button type="link">Elimina</Button>
+					</Popconfirm>
+				</span>
+			)
 		}
 	];
 	const data = [
 		{
 			key: '1',
-			number: 1,
+			id: 1,
 			name: 'John Brown'
 		},
 		{
 			key: '2',
-			number: 2,
+			id: 2,
 			name: 'Jim Green'
 		},
 		{
 			key: '3',
-			number: 3,
+			id: 3,
 			name: 'Joe Black'
 		},
 		{
 			key: '4',
-			number: 4,
+			id: 4,
 			name: 'Joe Black'
 		},
 		{
 			key: '5',
-			number: 5,
+			id: 5,
 			name: 'Joe Black'
 		},
 		{
 			key: '6',
-			number: 6,
+			id: 6,
 			name: 'Joe Black'
 		},
 		{
 			key: '7',
-			number: 7,
+			id: 7,
 			name: 'Joe Black'
 		},
 		{
 			key: '8',
-			number: 8,
+			id: 8,
 			name: 'Joe Black'
 		},
 		{
 			key: '9',
-			number: 9,
+			id: 9,
 			name: 'Joe Black'
 		},
 		{
 			key: '10',
-			number: 10,
+			id: 10,
 			name: 'Joe Black'
 		},
 		{
 			key: '11',
-			number: 11,
+			id: 11,
 			name: 'Joe Black'
 		},
 		{
 			key: '12',
-			number: 12,
+			id: 12,
 			name: 'Joe Black'
 		},
 		{
 			key: '13',
-			number: 13,
+			id: 13,
 			name: 'Joe Black'
 		},
 		{
 			key: '14',
-			number: 14,
+			id: 14,
 			name: 'Joe Black'
 		},
 		{
 			key: '15',
-			number: 15,
+			id: 15,
 			name: 'Joe Black'
 		},
 		{
 			key: '16',
-			number: 16,
+			id: 16,
 			name: 'Joe Black'
 		},
 		{
 			key: '17',
-			number: 17,
+			id: 17,
 			name: 'Joe Black'
 		},
 		{
 			key: '18',
-			number: 18,
+			id: 18,
 			name: 'Joe Black'
 		},
 		{
 			key: '19',
-			number: 19,
+			id: 19,
 			name: 'Joe Black'
 		},
 		{
 			key: '20',
-			number: 20,
+			id: 20,
 			name: 'Joe Black'
 		},
 		{
 			key: '21',
-			number: 21,
+			id: 21,
 			name: 'Joe Black'
 		},
 		{
 			key: '22',
-			number: 22,
+			id: 22,
 			name: 'Joe Black'
 		},
 		{
 			key: '23',
-			number: 23,
+			id: 23,
 			name: 'Joe Black'
 		},
 		{
 			key: '24',
-			number: 24,
+			id: 24,
 			name: 'Joe Black'
 		},
 		{
 			key: '25',
-			number: 25,
+			id: 25,
 			name: 'Joe Black'
 		},
 		{
 			key: '26',
-			number: 26,
+			id: 26,
 			name: 'Joe Black'
 		},
 		{
 			key: '27',
-			number: 27,
+			id: 27,
 			name: 'Joe Black'
 		},
 		{
 			key: '28',
-			number: 28,
+			id: 28,
 			name: 'Joe Black'
 		},
 		{
 			key: '29',
-			number: 29,
+			id: 29,
 			name: 'Joe Black'
 		},
 		{
 			key: '30',
-			number: 30,
+			id: 30,
 			name: 'Joe Black'
 		},
 		{
 			key: '31',
-			number: 31,
+			id: 31,
 			name: 'Joe Black'
 		},
 		{
 			key: '32',
-			number: 32,
+			id: 32,
 			name: 'Joe Black'
 		},
 		{
 			key: '33',
-			number: 33,
+			id: 33,
 			name: 'Joe Black'
 		},
 		{
 			key: '34',
-			number: 34,
+			id: 34,
 			name: 'Joe Black'
 		},
 		{
 			key: '35',
-			number: 35,
+			id: 35,
 			name: 'Joe Black'
 		},
 		{
 			key: '36',
-			number: 36,
+			id: 36,
 			name: 'Joe Black'
 		},
 		{
 			key: '37',
-			number: 37,
+			id: 37,
 			name: 'Joe Black'
 		},
 		{
 			key: '38',
-			number: 38,
+			id: 38,
 			name: 'Joe Black'
 		},
 		{
 			key: '39',
-			number: 39,
+			id: 39,
 			name: 'Joe Black'
 		},
 		{
 			key: '40',
-			number: 40,
+			id: 40,
 			name: 'Joe Black'
 		}
 	];
 
 	return (
-        <Card 
-            title="Squadre" 
-            bordered={true}
-            bodyStyle={{ padding: 0 }}
-        >
+		<Card title="Squadre" bordered={true} bodyStyle={{ padding: 0 }}>
 			<Table
 				columns={columns}
-                dataSource={data}
-                pagination={{
-                    pageSize: 5
-                }}
-                size="small"
+				dataSource={data}
+				pagination={{
+					pageSize: 5
+				}}
+				size="small"
 			/>
 		</Card>
 	);
 };
 
-TeamsTable.propTypes = {};
+TeamsTable.propTypes = {
+	editTeam: PropTypes.func.isRequired,
+	deleteTeam: PropTypes.func.isRequired
+};
 
 export default TeamsTable;
