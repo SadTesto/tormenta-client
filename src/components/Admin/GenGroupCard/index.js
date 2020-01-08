@@ -1,17 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Typography } from 'antd';
+import PropTypes from 'prop-types';
+import { Card, Typography, Modal } from 'antd';
 import { Formik } from 'formik';
 import GenGroupForm from './GenGroupForm';
 import axios from 'axios';
 
 const { Paragraph } = Typography;
 
-const GenGroupCard = () => {
+const GenGroupCard = ({ onSubmit }) => {
     const [options, setOptions] = useState([]);
 
     useEffect(() => {
         async function fetchOptions() {
-            const resp = await axios.get('url');
+			const resp = await axios.get("http://dev.tronweb.it/tormenta-server/generate_groups.php");
+			const { data, response } = resp;
+			if (data && data.code === 1) {
+				setOptions(data.groups);
+			} else {
+				let errorMessage = "Errore inaspettato";
+				if (response && response.data && response.data.message) {
+					errorMessage = response.data.message;
+                }
+                Modal.error({
+                    title: 'Errore',
+                    content: errorMessage
+                });
+			}
+		}
+        if (options.length === 0) {
+            fetchOptions();
         }
     }, [options]);
 
@@ -22,9 +39,7 @@ const GenGroupCard = () => {
                 initialValues={{
                     groups: 1
                 }}
-                onSubmit={(values, { setSubmitting }) => {
-                    alert(values.groups);
-                }}
+                onSubmit={onSubmit}
             >
                 {({
                     values,
@@ -41,6 +56,10 @@ const GenGroupCard = () => {
             </Formik>
         </Card>
     );
+};
+
+GenGroupCard.propTypes = {
+    onSubmit: PropTypes.func.isRequired
 };
 
 export default GenGroupCard;

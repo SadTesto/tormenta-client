@@ -22,8 +22,8 @@ const HelpCard = ({ message }) => {
                 </Button>
             )}
         >
-            {message.map(msg => (
-                <Paragraph>{msg}</Paragraph>
+            {message.map((msg, index) => (
+                <Paragraph key={index}>{msg}</Paragraph>
             ))}
         </Card>
     );

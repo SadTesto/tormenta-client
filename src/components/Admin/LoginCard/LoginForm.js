@@ -28,7 +28,11 @@ const LoginForm = ({
                 onChange={handleChange}
             />
         </Form.Item>
-        <Form.Item style={{ marginBottom: 10 }}>
+        <Form.Item 
+            style={{ marginBottom: 10 }}
+            validateStatus={errors.password ? 'error' : ''}
+            help={errors.password || ''}
+        >
             <Input
                 id="password"
                 name="password"

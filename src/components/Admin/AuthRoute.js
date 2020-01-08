@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchTournamentInfo } from '../../actions/tournamentActions';
+import { fetchInfo } from '../../actions/tournamentActions';
 import { Route, Redirect } from 'react-router-dom';
 
 const AuthRoute = ({ 
     component: Component, 
-    fetchTournamentInfo,
+    fetchInfo,
     admin, 
     tournament, 
     ...rest 
 }) => {
     if (admin.authed === true && tournament.pendings.info === undefined) {
-        fetchTournamentInfo().catch(err => setError(err.message));
+        fetchInfo().catch(err => setError(err.message));
     }
     const [error, setError] = useState(null);
     return (
@@ -38,7 +38,7 @@ const AuthRoute = ({
 };
 
 AuthRoute.propTypes = {
-    fetchTournamentInfo: PropTypes.func.isRequired,
+    fetchInfo: PropTypes.func.isRequired,
     admin: PropTypes.object.isRequired,
     tournament: PropTypes.object.isRequired,
     component: PropTypes.any.isRequired
@@ -49,4 +49,4 @@ const mapStateToProps = state => ({
     admin: state.admin
 });
 
-export default connect(mapStateToProps, { fetchTournamentInfo })(AuthRoute);
+export default connect(mapStateToProps, { fetchInfo })(AuthRoute);

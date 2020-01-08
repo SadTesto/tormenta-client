@@ -18,6 +18,8 @@ import Teams from '../pages/Teams';
 import Matches from '../pages/Matches';
 import NotFound from '../pages/NotFound';
 
+const pathPrefix = '';
+
 const getTitle = pathname => {
 	let spt = pathname.split('/');
 	let str = spt[spt.length - 1];
@@ -41,12 +43,12 @@ const App = () => (
             <Fragment>
                 <Switch>
                     <Route
-                        path="/login"
+                        path={`${pathPrefix}/login`}
                         component={Login}
                         exact
                     />
                     <AuthRoute
-                        path="*"
+                        path='*'
                         component={({ location, fetchError, setFetchError }) => (
                             <SiteWrapper
                                 navItemSelected={getId(location.pathname)}

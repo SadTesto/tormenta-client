@@ -8,13 +8,12 @@ const TeamModal = ({
 	title,
 	visible,
 	team = { id: null, name: null },
-	onOk,
+	onSubmit,
 	showModal
 }) => (
 	<Modal
 		title={title}
 		visible={visible}
-		onOk={onOk}
 		onCancel={() => showModal(false)}
 		footer={<Fragment></Fragment>}
 	>
@@ -24,7 +23,7 @@ const TeamModal = ({
 				name: team.name || ''
 			}}
 			onSubmit={(values, { setSubmitting, setErrors }) => {
-				alert('Added new team');
+				onSubmit(values, { setSubmitting, setErrors });
 				showModal(false);
 			}}
             onReset={() => showModal(false)}
@@ -47,7 +46,7 @@ TeamModal.propTypes = {
 	title: PropTypes.string.isRequired,
 	visible: PropTypes.bool.isRequired,
 	team: PropTypes.object,
-	onOk: PropTypes.func.isRequired,
+	onSubmit: PropTypes.func.isRequired,
 	showModal: PropTypes.func.isRequired
 };
 

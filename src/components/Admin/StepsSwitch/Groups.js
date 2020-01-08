@@ -1,15 +1,32 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Col, Card, Button, Typography } from 'antd';
+import { connect } from 'react-redux';
+import { generateGroups } from '../../../actions/tournamentActions';
+import { Col, Card, Button, Modal } from 'antd';
 import HelpCard from '../HelpCard';
 import GenGroupCard from '../GenGroupCard/';
 
-const { Paragraph } = Typography;
-
-const Groups = ({ nextStep }) => (
+const Groups = ({ tournament, generateGroups, nextStep }) => (
 	<Fragment>
 		<Col span={24} md={7}>
-			<GenGroupCard />
+            {tournament.groups.length === 0 ? (
+                <GenGroupCard 
+                    onSubmit={(values, { setSubmitting }) => {
+                        generateGroups(values.groups)
+                            .catch(({ message }) => 
+                                Modal.error({
+                                    title: 'Errore',
+                                    content: message
+                                })
+                            )
+                            .finally(() => setSubmitting(false));
+                    }}
+                />
+            ) : (
+                tournament.groups.map((group, index) => (
+                    <b key={index}>{group.name}</b>
+                ))
+            )}
 		</Col>
         <Col span={24} md={7}>
 			<Card title="Playoff" bordered={true}>
@@ -32,7 +49,12 @@ const Groups = ({ nextStep }) => (
 );
 
 Groups.propTypes = {
+    generateGroups: PropTypes.func.isRequired,
     nextStep: PropTypes.func.isRequired
 };
 
-export default Groups;
+const mapStateToProps = state => ({
+    tournament: state.tournament
+});
+
+export default connect(mapStateToProps, { generateGroups })(Groups);

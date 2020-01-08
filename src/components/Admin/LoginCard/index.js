@@ -10,6 +10,7 @@ const LoginCard = ({ authAdmin }) => (
 			password: '',
 			rememberMe: false
         }}
+        validateOnChange={false}
         validate={values => {
             let errors = {};
             if (!values.username) {

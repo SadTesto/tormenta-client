@@ -5,6 +5,7 @@ import { authAdmin } from '../../actions/adminActions';
 import { Layout, Card } from 'antd';
 import { Redirect } from 'react-router-dom';
 import LoginCard from '../Admin/LoginCard';
+import TWLogo from './tw-logo.png';
 
 const { Content, Footer } = Layout;
 
@@ -29,6 +30,18 @@ const Login = ({ admin, authAdmin, location }) =>
                         title="Login"
                         className="login-card"
                         headStyle={{ textAlign: 'center' }}
+                        cover={(
+                            <div style={{ textAlign: 'center' }}>
+                                <img 
+                                    style={{
+                                        width: 128,
+                                        height: 128
+                                    }} 
+                                    src={TWLogo} 
+                                    alt="TronWeb Logo"
+                                />
+                            </div>
+                        )}
                         bordered={true}
                     >
                         <LoginCard authAdmin={authAdmin}/>
