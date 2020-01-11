@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import Form from './Form';
 
-const TournamentForm = ({ handleSubmit }) => (
+const TournamentForm = ({ info, buttons, handleSubmit, disabled }) => (
 	<Formik
         initialValues={{
-            id: '',
-            title: '',
-            teams: 3
+            id: info ? info.id : '',
+            title: info ? info.title : '',
+            teams: info ? info.teams : 3
         }}
+        enableReinitialize={true}
         validate={values => {
             let errors = {};
             if (!values.title) {
@@ -27,15 +28,19 @@ const TournamentForm = ({ handleSubmit }) => (
 				values={values}
 				errors={errors}
 				handleChange={handleChange}
-				handleSubmit={handleSubmit}
-				isSubmitting={isSubmitting}
+                handleSubmit={handleSubmit}
+                buttons={buttons}
+                disabled={disabled === true}
 			/>
 		)}
 	</Formik>
 );
 
 TournamentForm.propTypes = {
-    handleSubmit: PropTypes.func.isRequired
+    info: PropTypes.object,
+    handleSubmit: PropTypes.func.isRequired,
+    buttons: PropTypes.array.isRequired,
+    disabled: PropTypes.bool
 };
 
 export default TournamentForm;

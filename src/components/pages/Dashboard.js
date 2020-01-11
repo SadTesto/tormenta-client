@@ -1,16 +1,19 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { deleteTournament } from '../../actions/tournamentActions';
 import { Row, Col } from 'antd';
 import TournamentInfo from '../Admin/TournamentInfo';
 
-const Dashboard = ({ tournament }) => {
+const Dashboard = ({ tournament, deleteTournament }) => {
     return (
         <Fragment>
             <Row>
                 <Col span={24} md={10}>
                     <TournamentInfo
-                        tournament={tournament}
+                        info={tournament.info}
+                        exists={tournament.exists}
+                        deleteTournament={deleteTournament}
                         loading={tournament.pendings.info === true}
                     />
                 </Col>
@@ -41,11 +44,12 @@ const Dashboard = ({ tournament }) => {
 };
 
 Dashboard.propTypes = {
-    tournament: PropTypes.object.isRequired
+    tournament: PropTypes.object.isRequired,
+    deleteTournament: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
     tournament: state.tournament
 });
 
-export default connect(mapStateToProps)(Dashboard);
+export default connect(mapStateToProps, { deleteTournament })(Dashboard);

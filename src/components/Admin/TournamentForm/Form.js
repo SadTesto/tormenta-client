@@ -7,7 +7,8 @@ const TForm = ({
     errors,
     handleChange,
     handleSubmit,
-    isSubmitting,
+    buttons,
+    disabled
 }) => (
     <Form 
         onSubmit={handleSubmit}
@@ -33,6 +34,7 @@ const TForm = ({
                 placeholder="Titolo"
                 value={values.title}
                 onChange={handleChange}
+                disabled={disabled}
             />
         </Form.Item>
         <Form.Item 
@@ -49,15 +51,15 @@ const TForm = ({
                 max={40} 
                 value={values.teams}
                 onChange={handleChange}
+                disabled={disabled}
             />
         </Form.Item>
         <Form.Item style={{ margin: 0, float: 'right' }}>
-            <Button
-                type="primary"
-                htmlType="submit"
-            >
-                Avanti
-            </Button>
+            {buttons.map(({ type, text, ...rest }, index) =>
+                <Button key={index} type={type} {...rest}>
+                    {text}
+                </Button>
+            )}
         </Form.Item>
     </Form>
 );
@@ -67,7 +69,8 @@ TForm.propTypes = {
     errors: PropTypes.object.isRequired,
     handleChange: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    isSubmitting: PropTypes.bool.isRequired,
+    buttons: PropTypes.array.isRequired,
+    disabled: PropTypes.bool.isRequired
 };
 
 export default TForm;

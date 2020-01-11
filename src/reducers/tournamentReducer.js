@@ -22,13 +22,15 @@ import {
     TORUNAMENT_GROUPS_FETCHED,
     GENERATE_TOURNAMENT_GROUP_PENDING,
     ERROR_IN_GENERATE_TOURNAMENT_GROUPS,
-    TOURNAMENT_GROUP_GENERATED
+    TOURNAMENT_GROUP_GENERATED,
+    DELETE_TOURNAMENT_PENDING,
+    TOURNAMENT_DELETED,
+    ERROR_IN_TORUNAMENT_DELETE,
 } from '../actions/types';
 
 const initialState = {
     exists: false,
-    id: null,
-    title: null,
+    info: {},
     teams: [],
     groups: [],
     matches: [],
@@ -45,6 +47,7 @@ export default function (state = initialState, { payload, type }) {
         case CREATE_INFO_PENDING:
         case FETCH_TOURNAMENT_GROUPS:
         case GENERATE_TOURNAMENT_GROUP_PENDING:
+        case DELETE_TOURNAMENT_PENDING:
             return {
                 ...state,
                 pendings: {
@@ -56,8 +59,11 @@ export default function (state = initialState, { payload, type }) {
             return {
                 ...state,
                 exists: true,
-                id: payload.id,
-                title: payload.title,
+                info: {
+                    id: payload.id,
+                    title: payload.title,
+                    teams: payload.teams
+                },
                 pendings: {
                     ...state.pendings,
                     info: false
@@ -75,8 +81,12 @@ export default function (state = initialState, { payload, type }) {
         case INFO_CREATED:
             return {
                 ...state,
-                id: payload.id,
-                title: payload.title,
+                exists: true,
+                info: {
+                    id: payload.id,
+                    title: payload.title,
+                    teams: payload.teams
+                },
                 pendings: {
                     ...state.pendings,
                     create_info: true
@@ -103,6 +113,14 @@ export default function (state = initialState, { payload, type }) {
                     groups: false
                 }
             };
+        case TOURNAMENT_DELETED:
+            return {
+                ...initialState,
+                pendings: {
+                    ...state.pendings,
+                    delete_tournament: false
+                }
+            };
         case ERROR_IN_TOURNAMENT_INFO_FETCH:
         case ERROR_IN_TOURNAMENT_TEAMS_FETCH:
         case ERROR_IN_TEAM_CREATE:
@@ -111,6 +129,7 @@ export default function (state = initialState, { payload, type }) {
         case ERROR_IN_INFO_CREATE:
         case ERROR_IN_TOURNAMENT_GROUPS_FETCH:
         case ERROR_IN_GENERATE_TOURNAMENT_GROUPS:
+        case ERROR_IN_TORUNAMENT_DELETE:
             return {
                 ...state,
                 pendings: {

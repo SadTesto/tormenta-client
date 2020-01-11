@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/adminActions';
 import { Link } from 'react-router-dom';
-import { Layout, Menu, Icon, PageHeader } from 'antd';
+import { Layout, Menu, Icon, PageHeader, Avatar } from 'antd';
 
 const { Content, Footer, Sider } = Layout;
 
@@ -18,19 +18,32 @@ const SiteWrapper = ({
     children 
 }) => (
 	<Layout style={{ height: '100%' }}>
-		<Sider breakpoint='md' collapsedWidth='0'>
+        <Sider 
+            breakpoint='md' 
+            collapsedWidth='0' 
+            style={{
+                backgroundColor: '#222222'
+            }}
+        >
+            <div style={{ textAlign: 'center', padding: '.8rem 0' }}>
+                <Avatar shape="square" size={64} icon="user" />
+                <h4 
+                    style={{ 
+                        color: '#ffffff', 
+                        marginTop: 10, 
+                        marginBottom: 0 
+                    }}
+                >{admin.username}</h4>
+            </div>
 			<div className='logo' />
             <Menu 
                 theme='dark' 
                 mode='inline' 
                 selectedKeys={[String(navItemSelected)]}
+                style={{
+                    backgroundColor: '#222222'
+                }}
             >
-                <Menu.Item disabled={true}>
-                    <span className='nav-text'>
-                        {admin.username}
-                    </span>
-                </Menu.Item>
-
 				{navItems.map(({ id, icon, text, location }) => (
                     <Menu.Item key={id} disabled={id !== 1 && tournament.id === null}>
                         <Link to={{ pathname: location }} key={id}>

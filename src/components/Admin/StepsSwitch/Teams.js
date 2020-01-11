@@ -6,25 +6,20 @@ import {
 	editTeam,
 	deleteTeam
 } from '../../../actions/tournamentActions';
-import { Col, Button, Card, Modal } from 'antd';
+import { Col, Button, Card, Modal, message } from 'antd';
 import HelpCard from '../HelpCard';
 import TeamsTable from '../TeamsTable';
 import TeamModal from '../TeamModal/';
 
-const Teams = ({ 
-    tournament, 
-    createTeam, 
-    editTeam, 
-    deleteTeam, 
-    nextStep 
-}) => {
+const Teams = ({ tournament, createTeam, editTeam, deleteTeam, nextStep }) => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [modalTeam, setModalTeam] = useState({
 		id: null,
 		name: null
     });
-    
-    const { teams } = tournament;
+    const [loading, setLoading] = useState(false);
+
+	const { teams } = tournament;
 
 	return (
 		<Fragment>
@@ -33,6 +28,11 @@ const Teams = ({
 				visible={modalVisible}
 				team={modalTeam}
 				onSubmit={(values, { setSubmitting }) => {
+                    setLoading(true);
+                    setModalTeam({
+                        id: null,
+                        name: null
+                    });
 					if (values.id) {
 						editTeam(values.id, values.name)
 							.catch(({ message }) =>
@@ -41,33 +41,51 @@ const Teams = ({
 									content: message
 								})
 							)
-							.finally(() => setSubmitting(false));
+							.finally(() => {
+                                setSubmitting(false);
+                                setLoading(false);
+                            });
 					} else {
 						createTeam(values.name)
+							.then(name =>
+								message.success(
+									`Squadra "${name}" creata con successo`
+								)
+							)
 							.catch(({ message }) =>
 								Modal.error({
 									title: 'Errore',
 									content: message
 								})
 							)
-							.finally(() => setSubmitting(false));
-					}
+							.finally(() => {
+                                setSubmitting(false);
+                                setLoading(false);
+                            });
+                    }
 				}}
 				showModal={setModalVisible}
 			/>
 			<Col span={24} md={10}>
 				<TeamsTable
+					teams={teams}
 					editTeam={team => {
 						setModalTeam(team);
 						setModalVisible(true);
 					}}
 					deleteTeam={teamId =>
-						deleteTeam(teamId).catch(({ message }) =>
-							Modal.error({
-								title: 'Errore',
-								content: message
-							})
-						)
+						deleteTeam(teamId)
+							.then(name =>
+								message.success(
+									`Squadra "${name}" eliminata con successo`
+								)
+							)
+							.catch(({ message }) =>
+								Modal.error({
+									title: 'Errore',
+									content: message
+								})
+							)
 					}
 				/>
 			</Col>
@@ -83,7 +101,8 @@ const Teams = ({
 								name: null
 							});
 							setModalVisible(true);
-						}}
+                        }}
+                        loading={loading}
 					>
 						Aggiungi
 					</Button>
@@ -109,7 +128,7 @@ const Teams = ({
 					message={[
 						'Per aggiungere una nuova squadra clicca sul pulsante ' +
                         'blu "Aggiungi". Dopo aver inserito il nome della squadra ' +
-                        'e aver confermato, la squadra apparira\' nella tabella qui ' +
+                        "e aver confermato, la squadra apparira' nella tabella qui " +
                         'accanto.',
 						'Per modificare o eliminare una squadra utilizza gli appositi ' +
                         'pulsanti nella tabella.',
@@ -122,15 +141,17 @@ const Teams = ({
 };
 
 Teams.propTypes = {
-    tournament: PropTypes.object.isRequired,
-    createTeam: PropTypes.func.isRequired,
-    editTeam: PropTypes.func.isRequired, 
-    deleteTeam: PropTypes.func.isRequired,
-    nextStep: PropTypes.func.isRequired
+	tournament: PropTypes.object.isRequired,
+	createTeam: PropTypes.func.isRequired,
+	editTeam: PropTypes.func.isRequired,
+	deleteTeam: PropTypes.func.isRequired,
+	nextStep: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-    tournament: state.tournament
+	tournament: state.tournament
 });
 
-export default connect(mapStateToProps, { createTeam, editTeam, deleteTeam })(Teams);
+export default connect(mapStateToProps, { createTeam, editTeam, deleteTeam })(
+	Teams
+);

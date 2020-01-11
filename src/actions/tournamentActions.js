@@ -23,11 +23,13 @@ import {
     ERROR_IN_TOURNAMENT_GROUPS_FETCH,
     GENERATE_TOURNAMENT_GROUP_PENDING,
     TOURNAMENT_GROUP_GENERATED,
-    ERROR_IN_GENERATE_TOURNAMENT_GROUPS
+    ERROR_IN_GENERATE_TOURNAMENT_GROUPS,
+    DELETE_TOURNAMENT_PENDING,
+    TOURNAMENT_DELETED,
+    ERROR_IN_TORUNAMENT_DELETE,
 } from './types';
 import store from '../store';
 import axios from 'axios';
-axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
 const API_URL = 'http://dev.tronweb.it/tormenta-server';
 
@@ -99,7 +101,7 @@ export const createInfo = (title, teams) => dispatch => {
 				}
 			})
 			.catch(err => {
-				const { response } = err;
+                const { response } = err;
 				if (response && response.data && response.data.message) {
 					err.message = response.data.message;
 				}
@@ -164,7 +166,7 @@ export const createTeam = name => dispatch => {
                             pend: 'new_team'
                         }
                     });
-                    resolve();
+                    resolve(data.team.name);
                 } else {
                     throw new Error(data.message || 'Errore sconosciuto');
                 }
@@ -245,7 +247,7 @@ export const deleteTeam = id => dispatch => {
                             pend: 'delete_team'
                         }
                     });
-                    resolve();
+                    resolve(data.team.name);
                 } else {
                     throw new Error(data.message || 'Errore sconosciuto');
                 }
@@ -324,6 +326,41 @@ export const generateGroups = groups => dispatch => {
 				dispatch({
 					type: ERROR_IN_GENERATE_TOURNAMENT_GROUPS,
 					payload: 'groups'
+				});
+				reject(err);
+			})
+    );
+};
+
+export const deleteTournament = () => dispatch => {
+    dispatch({
+        type: DELETE_TOURNAMENT_PENDING,
+        payload: 'delete_tournament'
+    });
+
+    const { id } = store.getState().tournament;
+
+    return new Promise((resolve, reject) => 
+        axios.post(`${API_URL}/delete_tournament.php`, { id })
+            .then(({ data }) => {
+                if (data.code === 1) {
+                    dispatch({
+                        type: TOURNAMENT_DELETED,
+                        payload: null
+                    });
+                    resolve();
+                } else {
+                    throw new Error(data.message || 'Errore sconosciuto');
+                }
+            })
+            .catch(err => {
+				const { response } = err;
+				if (response && response.data && response.data.message) {
+					err.message = response.data.message;
+				}
+				dispatch({
+					type: ERROR_IN_TORUNAMENT_DELETE,
+					payload: 'delete_tournament'
 				});
 				reject(err);
 			})

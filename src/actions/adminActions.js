@@ -5,7 +5,6 @@ import {
     ADMIN_LOGOUT
 } from './types';
 import axios from 'axios';
-axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
 const API_URL = 'http://dev.tronweb.it/tormenta-server';
 
