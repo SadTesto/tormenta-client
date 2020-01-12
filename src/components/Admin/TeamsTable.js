@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { Card, Table, Button, Divider, Popconfirm, Empty } from 'antd';
 
 const TeamsTable = ({ teams, editTeam, deleteTeam, loading }) => {
+    const data = teams.map((team, index) => ({ ...team, key: (index + 1) }));
 	const columns = [
 		{
 			title: '#',
-			dataIndex: 'id'
+			dataIndex: 'key'
 		},
 		{
 			title: 'Nome',
@@ -46,7 +47,7 @@ const TeamsTable = ({ teams, editTeam, deleteTeam, loading }) => {
 		<Card title="Squadre" bordered={true} bodyStyle={{ padding: 0 }}>
 			<Table
 				columns={columns}
-				dataSource={teams}
+				dataSource={data}
 				pagination={{
 					pageSize: 5
 				}}

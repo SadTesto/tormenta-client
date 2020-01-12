@@ -12,20 +12,27 @@ const GenGroupCard = ({ onSubmit }) => {
 
     useEffect(() => {
         async function fetchOptions() {
-			const resp = await axios.get("http://dev.tronweb.it/tormenta-server/generate_groups.php");
-			const { data, response } = resp;
-			if (data && data.code === 1) {
-				setOptions(data.groups);
-			} else {
-				let errorMessage = "Errore inaspettato";
-				if (response && response.data && response.data.message) {
-					errorMessage = response.data.message;
+            try {
+                const resp = await axios.get("http://dev.tronweb.it/tormenta-server/generate_groups.php");
+                const { data, response } = resp;
+                if (data && data.code === 1) {
+                    setOptions(data.groups);
+                } else {
+                    let errorMessage = "Errore inaspettato";
+                    if (response && response.data && response.data.message) {
+                        errorMessage = response.data.message;
+                    }
+                    Modal.error({
+                        title: 'Errore',
+                        content: errorMessage
+                    });
                 }
+            } catch (e) {
                 Modal.error({
                     title: 'Errore',
-                    content: errorMessage
+                    content: e.message
                 });
-			}
+            }
 		}
         if (options.length === 0) {
             fetchOptions();

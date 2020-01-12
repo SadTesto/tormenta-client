@@ -15,8 +15,11 @@ const GenGroupForm = ({
             <Col xs={24} md={18}>
                 <Form.Item style={{display: 'block'}}>
                     <Select onChange={handleChange} value={values.groups}>
-                        {options.map(opt => (
-                            <Option value={opt}>{opt} gironi</Option>
+                        {options.map((opt, index) => (
+                            <Option 
+                                value={opt} 
+                                key={index}
+                            >{opt + ' giron' + (opt === 1 ? 'e' : 'i')}</Option>
                         ))}
                     </Select>
                 </Form.Item>
@@ -35,7 +38,6 @@ const GenGroupForm = ({
 GenGroupForm.propTypes = {
 	options: PropTypes.array.isRequired,
 	values: PropTypes.object.isRequired,
-	errors: PropTypes.object.isRequired,
 	handleChange: PropTypes.func.isRequired,
 	handleSubmit: PropTypes.func.isRequired
 };

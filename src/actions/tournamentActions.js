@@ -338,7 +338,7 @@ export const deleteTournament = () => dispatch => {
         payload: 'delete_tournament'
     });
 
-    const { id } = store.getState().tournament;
+    const { id } = store.getState().tournament.info;
 
     return new Promise((resolve, reject) => 
         axios.post(`${API_URL}/delete_tournament.php`, { id })

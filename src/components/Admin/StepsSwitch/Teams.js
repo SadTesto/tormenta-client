@@ -1,147 +1,71 @@
-import React, { Fragment, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
+	fetchTeams,
 	createTeam,
 	editTeam,
 	deleteTeam
 } from '../../../actions/tournamentActions';
-import { Col, Button, Card, Modal, message } from 'antd';
-import HelpCard from '../HelpCard';
-import TeamsTable from '../TeamsTable';
-import TeamModal from '../TeamModal/';
+import { Button, Modal } from 'antd';
+import TeamsWrapper from '../TeamsWrapper';
 
-const Teams = ({ tournament, createTeam, editTeam, deleteTeam, nextStep }) => {
-	const [modalVisible, setModalVisible] = useState(false);
-	const [modalTeam, setModalTeam] = useState({
-		id: null,
-		name: null
-    });
-    const [loading, setLoading] = useState(false);
+const Teams = ({
+	tournament,
+	fetchTeams,
+	createTeam,
+	editTeam,
+	deleteTeam,
+	nextStep
+}) => {
+	const { info, teams, pendings } = tournament;
 
-	const { teams } = tournament;
+	const nextStepCheck = (teamsLen, max) => {
+		if (teamsLen < 3) {
+			Modal.warn({
+				title: 'Attenzione',
+				content: 'Devi inserire almeno 3 squadre prima di poter continuare'
+			});
+		} else if (teamsLen > max) {
+			Modal.warn({
+				title: 'Attenzione',
+				content: 'Numero massimo di squadre raggiunto'
+			});
+		} else {
+			nextStep();
+		}
+	};
+
+	if (pendings.teams === undefined && teams.length === 0) {
+		fetchTeams().catch(({ message }) =>
+			Modal.error({
+				title: 'Errore',
+				content: message
+			})
+		);
+	}
 
 	return (
-		<Fragment>
-			<TeamModal
-				title={(modalTeam.id ? 'Modifica' : 'Nuova') + ' squadra'}
-				visible={modalVisible}
-				team={modalTeam}
-				onSubmit={(values, { setSubmitting }) => {
-                    setLoading(true);
-                    setModalTeam({
-                        id: null,
-                        name: null
-                    });
-					if (values.id) {
-						editTeam(values.id, values.name)
-							.catch(({ message }) =>
-								Modal.error({
-									title: 'Errore',
-									content: message
-								})
-							)
-							.finally(() => {
-                                setSubmitting(false);
-                                setLoading(false);
-                            });
-					} else {
-						createTeam(values.name)
-							.then(name =>
-								message.success(
-									`Squadra "${name}" creata con successo`
-								)
-							)
-							.catch(({ message }) =>
-								Modal.error({
-									title: 'Errore',
-									content: message
-								})
-							)
-							.finally(() => {
-                                setSubmitting(false);
-                                setLoading(false);
-                            });
-                    }
-				}}
-				showModal={setModalVisible}
-			/>
-			<Col span={24} md={10}>
-				<TeamsTable
-					teams={teams}
-					editTeam={team => {
-						setModalTeam(team);
-						setModalVisible(true);
-					}}
-					deleteTeam={teamId =>
-						deleteTeam(teamId)
-							.then(name =>
-								message.success(
-									`Squadra "${name}" eliminata con successo`
-								)
-							)
-							.catch(({ message }) =>
-								Modal.error({
-									title: 'Errore',
-									content: message
-								})
-							)
-					}
-				/>
-			</Col>
-			<Col span={24} md={4}>
-				<Card bordered={true}>
-					<Button
-						type="primary"
-						block
-						style={{ marginBottom: 10 }}
-						onClick={() => {
-							setModalTeam({
-								id: null,
-								name: null
-							});
-							setModalVisible(true);
-                        }}
-                        loading={loading}
-					>
-						Aggiungi
-					</Button>
-					<Button
-						block
-						onClick={() =>
-							teams.length > 0
-								? nextStep()
-								: Modal.error({
-										title: 'Errore',
-										content:
-											'Devi inserire almeno ' +
-											'3 squadre prima di poter continuare'
-								  })
-						}
-					>
-						Avanti
-					</Button>
-				</Card>
-			</Col>
-			<Col span={24} md={10}>
-				<HelpCard
-					message={[
-						'Per aggiungere una nuova squadra clicca sul pulsante ' +
-                        'blu "Aggiungi". Dopo aver inserito il nome della squadra ' +
-                        "e aver confermato, la squadra apparira' nella tabella qui " +
-                        'accanto.',
-						'Per modificare o eliminare una squadra utilizza gli appositi ' +
-                        'pulsanti nella tabella.',
-						'Ricorda di inserire un minimo di 3 squadre e un massimo di 40.'
-					]}
-				/>
-			</Col>
-		</Fragment>
+		<TeamsWrapper
+			tournament={tournament}
+			createTeam={createTeam}
+			editTeam={editTeam}
+			deleteTeam={deleteTeam}
+			extraButtons={
+				<Button
+					block
+					onClick={() => nextStepCheck(teams.length, info.teams)}
+				>
+					Avanti
+				</Button>
+			}
+		/>
 	);
 };
 
 Teams.propTypes = {
 	tournament: PropTypes.object.isRequired,
+	fetchTeams: PropTypes.func.isRequired,
 	createTeam: PropTypes.func.isRequired,
 	editTeam: PropTypes.func.isRequired,
 	deleteTeam: PropTypes.func.isRequired,
@@ -152,6 +76,9 @@ const mapStateToProps = state => ({
 	tournament: state.tournament
 });
 
-export default connect(mapStateToProps, { createTeam, editTeam, deleteTeam })(
-	Teams
-);
+export default connect(mapStateToProps, {
+	fetchTeams,
+	createTeam,
+	editTeam,
+	deleteTeam
+})(Teams);

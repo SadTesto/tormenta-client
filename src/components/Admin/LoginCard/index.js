@@ -23,8 +23,7 @@ const LoginCard = ({ authAdmin }) => (
 		}}
 		onSubmit={(values, { setSubmitting, setErrors }) => {
             authAdmin(values.username, values.password)
-                .catch(err => setErrors({ username: err.message }))
-                .finally(() => setSubmitting(false));
+                .catch(err => setErrors({ username: err.message }));
 		}}
 	>
 		{({ values, errors, handleChange, handleSubmit, isSubmitting }) => (

@@ -22,8 +22,8 @@ const TeamModal = ({
 				id: team.id || '',
 				name: team.name || ''
 			}}
-			onSubmit={(values, { setSubmitting, setErrors }) => {
-				onSubmit(values, { setSubmitting, setErrors });
+			onSubmit={(values, { setSubmitting, setErrors, resetForm }) => {
+				onSubmit(values, { setSubmitting, setErrors, resetForm });
 				showModal(false);
 			}}
             onReset={() => showModal(false)}

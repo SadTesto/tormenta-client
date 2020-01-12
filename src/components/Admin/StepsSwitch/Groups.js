@@ -11,7 +11,7 @@ const Groups = ({ tournament, generateGroups, nextStep }) => (
 		<Col span={24} md={7}>
             {tournament.groups.length === 0 ? (
                 <GenGroupCard 
-                    onSubmit={(values, { setSubmitting }) => {
+                    onSubmit={(values) =>
                         generateGroups(values.groups)
                             .catch(({ message }) => 
                                 Modal.error({
@@ -19,8 +19,7 @@ const Groups = ({ tournament, generateGroups, nextStep }) => (
                                     content: message
                                 })
                             )
-                            .finally(() => setSubmitting(false));
-                    }}
+                    }
                 />
             ) : (
                 tournament.groups.map((group, index) => (

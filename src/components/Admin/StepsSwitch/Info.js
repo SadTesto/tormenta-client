@@ -16,20 +16,20 @@ const Info = ({ tournament, nextStep, setLoading, createInfo }) => {
 				<Col span={24} md={10}>
 					<Card title="Informazioni" bordered={true}>
 						<TournamentForm
-							handleSubmit={(values, { setSubmitting }) => {
+							handleSubmit={(values) => {
 								setLoading(true);
 								createInfo(values.title, values.teams)
-									.then(() => nextStep())
-									.catch(err =>
+									.then(() => {
+                                        setLoading(false);
+                                        nextStep();
+                                    })
+                                    .catch(err => {
+                                        setLoading(false);
 										Modal.error({
 											title: 'Errore',
 											content: err.message
-										})
-									)
-									.finally(() => {
-										setSubmitting(false);
-										setLoading(false);
-									});
+										});
+                                    });
 							}}
 							buttons={[
 								{

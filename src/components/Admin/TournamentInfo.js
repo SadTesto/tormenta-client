@@ -13,14 +13,14 @@ const TournamentInfo = ({ info, exists, deleteTournament, loading }) => (
             <Fragment>
                 <Row>
                     <Col 
-                        md={6} 
+                        md={8} 
                         xs={24} 
                         className="ant-form-item-label"
                     >
                         <label title="Titolo del torneo">Titolo del torneo</label>
                     </Col>
                     <Col 
-                        md={18} 
+                        md={16} 
                         xs={24} 
                         className="ant-form-item-control-wrapper"
                     >
@@ -33,14 +33,14 @@ const TournamentInfo = ({ info, exists, deleteTournament, loading }) => (
                 </Row>
                 <Row>
                     <Col 
-                        md={6} 
+                        md={8} 
                         xs={24} 
                         className="ant-form-item-label"
                     >
                         <label title="Titolo del torneo">Numero di squadre</label>
                     </Col>
                     <Col 
-                        md={18} 
+                        md={16} 
                         xs={24} 
                         className="ant-form-item-control-wrapper"
                     >
