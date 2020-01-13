@@ -135,14 +135,26 @@ export const fetchTeams = () => dispatch => {
             })
             .catch(err => {
                 const { response } = err;
+                let ignore = false;
 				if (response && response.data && response.data.message) {
-					err.message = response.data.message;
-				}
-				dispatch({
-					type: ERROR_IN_TOURNAMENT_TEAMS_FETCH,
-					payload: 'teams'
-				});
-				reject(err);
+                    if (response.data.code === 0) {
+                        ignore = true
+                    }
+                    err.message = response.data.message;
+                }
+                if (ignore) {
+                    dispatch({
+                        type: TOURNAMENT_TEAMS_FETCHED,
+                        payload: []
+                    });
+                    resolve();
+                } else {
+                    dispatch({
+                        type: ERROR_IN_TOURNAMENT_TEAMS_FETCH,
+                        payload: 'teams'
+                    });
+                    reject(err);
+                }
             })
     );
 };
@@ -286,15 +298,27 @@ export const fetchGroups = () => dispatch => {
                 }
             })
             .catch(err => {
-				const { response } = err;
+                const { response } = err;
+                let ignore = false;
 				if (response && response.data && response.data.message) {
-					err.message = response.data.message;
-				}
-				dispatch({
-					type: ERROR_IN_TOURNAMENT_GROUPS_FETCH,
-					payload: 'groups'
-				});
-				reject(err);
+                    err.message = response.data.message;
+                    if (response.data.code === 0) {
+                        ignore = true;
+                    }
+                }
+                if (ignore) {
+                    dispatch({
+                        type: TORUNAMENT_GROUPS_FETCHED,
+                        payload: []
+                    });
+                    resolve();
+                } else {
+                    dispatch({
+                        type: ERROR_IN_TOURNAMENT_GROUPS_FETCH,
+                        payload: 'groups'
+                    });
+                    reject(err);
+                }
 			})
     );
 };

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { logout } from '../../actions/adminActions';
 import { Link } from 'react-router-dom';
 import { Layout, Menu, Icon, PageHeader, Avatar } from 'antd';
+import LoadingPage from './LoadingPage';
 
 const { Content, Footer, Sider } = Layout;
 
@@ -17,7 +18,7 @@ const SiteWrapper = ({
     tournament,
     children 
 }) => (
-	<Layout style={{ height: '100%' }}>
+	<Layout style={{ minHeight: '100%' }}>
         <Sider 
             breakpoint='md' 
             collapsedWidth='0' 
@@ -45,7 +46,7 @@ const SiteWrapper = ({
                 }}
             >
 				{navItems.map(({ id, icon, text, location }) => (
-                    <Menu.Item key={id} disabled={id !== 1 && tournament.id === null}>
+                    <Menu.Item key={id} disabled={id !== 1 && tournament.exists === false}>
                         <Link to={{ pathname: location }} key={id}>
                             <Icon type={icon} />
                             <span className='nav-text'>
@@ -78,7 +79,10 @@ const SiteWrapper = ({
                     className="content-wrapper"
                     style={{ padding: '0 10px 10px 10px' }}
                 >
-                    {children}
+                    {tournament.pendings.info === false ? 
+                        children : 
+                        <LoadingPage />
+                    }
                 </div>
 			</Content>
 			<Footer style={{ textAlign: 'center' }}>

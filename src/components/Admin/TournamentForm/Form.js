@@ -14,11 +14,11 @@ const TForm = ({
         onSubmit={handleSubmit}
         labelCol={{
             xs: { span: 24 },
-            md: { span: 8 },
+            sm: { span: 8 },
         }}
         wrapperCol={{
             xs: { span: 24 },
-            md: { span: 16 },
+            sm: { span: 16 },
         }}
     >
         <Form.Item

@@ -18,7 +18,11 @@ const Teams = ({
 	deleteTeam,
 	nextStep
 }) => {
-	const { info, teams, pendings } = tournament;
+    const { info, teams, pendings } = tournament;
+    
+    // if (teams.length <= info.teams && teams.length >= 3) {
+    //     nextStep();
+    // }
 
 	const nextStepCheck = (teamsLen, max) => {
 		if (teamsLen < 3) {

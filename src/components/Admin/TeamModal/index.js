@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'antd';
 import { Formik } from 'formik';
@@ -11,35 +11,41 @@ const TeamModal = ({
 	onSubmit,
 	showModal
 }) => (
-	<Modal
-		title={title}
-		visible={visible}
-		onCancel={() => showModal(false)}
-		footer={<Fragment></Fragment>}
-	>
-		<Formik
-			initialValues={{
-				id: team.id || '',
-				name: team.name || ''
-			}}
-			onSubmit={(values, { setSubmitting, setErrors, resetForm }) => {
-				onSubmit(values, { setSubmitting, setErrors, resetForm });
-				showModal(false);
-			}}
-            onReset={() => showModal(false)}
-            enableReinitialize={true}
-		>
-			{({ values, errors, handleSubmit, handleReset, handleChange }) => (
-				<TeamForm
-					values={values}
-					errors={errors}
-					handleSubmit={handleSubmit}
-					handleReset={handleReset}
-					handleChange={handleChange}
-				/>
-			)}
-		</Formik>
-	</Modal>
+	
+    <Formik
+        initialValues={{
+            id: team.id || '',
+            name: team.name || ''
+        }}
+        onSubmit={(values, { setSubmitting, setErrors, resetForm }) => {
+            onSubmit(values, { setSubmitting, setErrors, resetForm });
+            showModal(false);
+        }}
+        onReset={(values, { resetForm }) => {
+            showModal(false);
+            resetForm();
+        }}
+        enableReinitialize={true}
+    >
+        {({ values, errors, handleSubmit, handleReset, handleChange, submitForm }) => (
+            <Modal
+                title={title}
+                visible={visible}
+                onCancel={handleReset}
+                onOk={() => submitForm()}
+                okText="Salva"
+                cancelText="Annulla"
+            >
+                <TeamForm
+                    values={values}
+                    errors={errors}
+                    handleSubmit={handleSubmit}
+                    handleReset={handleReset}
+                    handleChange={handleChange}
+                />
+            </Modal>
+        )}
+    </Formik>
 );
 
 TeamModal.propTypes = {

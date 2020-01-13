@@ -32,13 +32,16 @@ const TeamsWrapper = ({
 						id: null,
 						name: null
 					});
-					resetForm();
 					setLoading(true);
 					if (values.id) {
 						editTeam(values.id, values.name)
-							.then(() => setLoading(false))
+							.then(() => {
+                                setLoading(false);
+                                resetForm();
+                            })
 							.catch(({ message }) => {
-								setLoading(false);
+                                setLoading(false);
+                                resetForm();
 								Modal.error({
 									title: 'Errore',
 									content: message
@@ -47,23 +50,25 @@ const TeamsWrapper = ({
 					} else {
 						createTeam(values.name)
 							.then(name => {
-								setLoading(false);
+                                setLoading(false);
+                                resetForm();
 								message.success(
 									`Squadra "${name}" creata con successo`
-								);
+                                );
 							})
 							.catch(({ message }) => {
-								setLoading(false);
+                                setLoading(false);
+                                resetForm();
 								Modal.error({
 									title: 'Errore',
 									content: message
-								});
+                                });
 							});
 					}
 				}}
 				showModal={setModalVisible}
 			/>
-			<Col span={24} md={12}>
+			<Col span={24} lg={16} xl={12}>
 				<TeamsTable
 					teams={teams}
 					editTeam={team => {
@@ -86,7 +91,7 @@ const TeamsWrapper = ({
 					}
 				/>
 			</Col>
-			<Col span={24} md={4}>
+			<Col span={24} lg={8} xl={4}>
 				<Card bordered={true}>
 					<Button
 						type="primary"
@@ -115,7 +120,7 @@ const TeamsWrapper = ({
 					{extraButtons}
 				</Card>
 			</Col>
-			<Col span={24} md={8}>
+			<Col span={24} xl={8}>
 				<HelpCard
 					message={[
 						'Per aggiungere una nuova squadra clicca sul pulsante ' +
@@ -124,7 +129,7 @@ const TeamsWrapper = ({
                         'accanto.',
 						'Per modificare o eliminare una squadra utilizza gli appositi ' +
                         'pulsanti nella tabella.',
-						'Ricorda di inserire un minimo di 3 squadre e un massimo di 40.'
+						`Ricorda di inserire un minimo di 3 squadre e un massimo di ${info.teams}.`
 					]}
 				/>
 			</Col>

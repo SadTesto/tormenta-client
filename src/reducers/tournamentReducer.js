@@ -33,7 +33,6 @@ const initialState = {
     info: {},
     teams: [],
     groups: [],
-    matches: [],
     pendings: {}
 };
 

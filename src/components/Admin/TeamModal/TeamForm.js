@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Button } from 'antd';
+import { Form, Input } from 'antd';
 
 const TeamForm = ({
     values,
@@ -9,10 +9,12 @@ const TeamForm = ({
     handleSubmit,
     handleReset
 }) => (
-    <Form onSubmit={handleSubmit} onReset={handleReset}>
+    <Form onSubmit={handleSubmit} onReset={handleReset} layout="vertical">
         <Form.Item
             validateStatus={errors.name ? 'error' : ''}
             help={errors.name || ''}
+            label="Nome della squadra"
+            style={{ marginBottom: 0 }}
         >
             <Input
                 id="name"
@@ -22,14 +24,6 @@ const TeamForm = ({
                 onChange={handleChange}
                 value={values.name}
             />
-        </Form.Item>
-        <Form.Item style={{float:'right'}}>
-            <Button type="danger" htmlType="reset" style={{marginRight: 10}}>
-                Annulla
-            </Button>
-            <Button type="primary" htmlType="submit">
-                Salva
-            </Button>
         </Form.Item>
     </Form>
 );

@@ -9,6 +9,7 @@ import {
 } from '../../actions/tournamentActions';
 import { Row, Modal } from 'antd';
 import TeamsWrapper from '../Admin/TeamsWrapper';
+import LoadingPage from '../Admin/LoadingPage';
 
 const Teams = ({
 	tournament,
@@ -17,22 +18,27 @@ const Teams = ({
 	editTeam,
 	deleteTeam
 }) => {
-	if (tournament.pendings.teams === undefined) {
+	const { pendings } = tournament;
+	if (pendings.teams === undefined) {
 		fetchTeams().catch(({ message }) =>
 			Modal.error({ title: 'Errore', content: message })
 		);
 	}
 
-	return (
-		<Row>
-			<TeamsWrapper
-				tournament={tournament}
-				createTeam={createTeam}
-				editTeam={editTeam}
-				deleteTeam={deleteTeam}
-			/>
-		</Row>
-	);
+	if (pendings.teams === false) {
+		return (
+			<Row>
+				<TeamsWrapper
+					tournament={tournament}
+					createTeam={createTeam}
+					editTeam={editTeam}
+					deleteTeam={deleteTeam}
+				/>
+			</Row>
+		);
+	} else {
+		return <LoadingPage />;
+	}
 };
 
 Teams.propTypes = {

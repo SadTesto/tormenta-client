@@ -13,7 +13,7 @@ const Info = ({ tournament, nextStep, setLoading, createInfo }) => {
 	} else {
 		return (
 			<Fragment>
-				<Col span={24} md={10}>
+				<Col span={24} lg={16} xl={10}>
 					<Card title="Informazioni" bordered={true}>
 						<TournamentForm
 							handleSubmit={(values) => {
@@ -41,7 +41,7 @@ const Info = ({ tournament, nextStep, setLoading, createInfo }) => {
 						/>
 					</Card>
 				</Col>
-				<Col span={24} md={10}>
+				<Col span={24} lg={8} xl={10}>
 					<HelpCard
 						message={[
 							'Per iniziare inserisci le informazioni di base quali titolo del ' +
