@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Card, Button, Table, Empty } from 'antd';
 import MatchModal from './MatchModal/';
 
-const MatchesTable = ({ group, teams }) => {
+const MatchesTable = ({ matches, teams, loading }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [activeMatch, setActiveMatch] = useState({ teamA: null, teamB: null });
 
@@ -24,7 +24,7 @@ const MatchesTable = ({ group, teams }) => {
                     pagination={{
                         pageSize: 10
                     }}
-                    dataSource={group.matches.map(match => {
+                    dataSource={matches.map(match => {
                         let teamA = teams.find(({ id }) => id === match.teamA);
                         let teamB = teams.find(({ id }) => id === match.teamB);
                         return {
@@ -80,6 +80,7 @@ const MatchesTable = ({ group, teams }) => {
                             />
                         )
                     }}
+                    loading={loading === true}
                 />
             </Card>
         </Fragment>
@@ -87,8 +88,9 @@ const MatchesTable = ({ group, teams }) => {
 };
 
 MatchesTable.propTypes = {
-    group: PropTypes.object.isRequired,
-    teams: PropTypes.array.isRequired
+    matches: PropTypes.array.isRequired,
+    teams: PropTypes.array.isRequired,
+    loading: PropTypes.bool
 };
 
 export default MatchesTable;

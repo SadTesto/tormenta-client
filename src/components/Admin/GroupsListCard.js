@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { List, Button, Icon, Empty, Card } from 'antd';
 
 const GroupsListCard = ({ groups, setActive }) => (
-    <Card title="Gironi" bordered={true} bodyStyle={{ padding: '0 10px' }}>
+    <Card title="Gironi" bordered={true} bodyStyle={{ padding: '10px 0' }}>
         <List
             dataSource={groups}
             renderItem={group => (
@@ -12,7 +12,12 @@ const GroupsListCard = ({ groups, setActive }) => (
                         <Button 
                             type="link" 
                             block 
-                            onClick={() => setActive(group)}
+                            onClick={() => 
+                                setActive({ 
+                                    ...group,
+                                    matches_fetched: false
+                                })
+                            }
                             style={group.active === true ? { color: '#fff' } : null}
                         >
                             Vedi
