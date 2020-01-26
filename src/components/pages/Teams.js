@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
+    fetchGroups,
 	fetchTeams,
 	createTeam,
 	editTeam,
@@ -12,7 +13,8 @@ import TeamsWrapper from '../Admin/TeamsWrapper';
 import LoadingPage from '../Admin/LoadingPage';
 
 const Teams = ({
-	tournament,
+    tournament,
+    fetchGroups,
 	fetchTeams,
 	createTeam,
 	editTeam,
@@ -23,9 +25,13 @@ const Teams = ({
 		fetchTeams().catch(({ message }) =>
 			Modal.error({ title: 'Errore', content: message })
 		);
+    } else if (pendings.groups === undefined) {
+		fetchGroups().catch(({ message }) =>
+			Modal.error({ title: 'Errore', content: message })
+		);
 	}
 
-	if (pendings.teams === false) {
+	if (pendings.info === false && pendings.teams === false && pendings.groups === false) {
 		return (
 			<Row>
 				<TeamsWrapper
@@ -42,7 +48,8 @@ const Teams = ({
 };
 
 Teams.propTypes = {
-	tournament: PropTypes.object.isRequired,
+    tournament: PropTypes.object.isRequired,
+    fetchGroups: PropTypes.func.isRequired,
 	fetchTeams: PropTypes.func.isRequired,
 	createTeam: PropTypes.func.isRequired,
 	editTeam: PropTypes.func.isRequired,
@@ -54,6 +61,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
+    fetchGroups,
 	fetchTeams,
 	createTeam,
 	editTeam,

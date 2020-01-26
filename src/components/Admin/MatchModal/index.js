@@ -12,9 +12,8 @@ const MatchModal = ({ match, visible, onSubmit, showModal }) => (
             teamA_score: match.teamA_score || 0,
             teamB_score: match.teamB_score || 0,
         }}
-        onReset={(values, { resetForm }) => {
+        onReset={(values) => {
             showModal(false);
-            resetForm();
         }}
         enableReinitialize={true}
         onSubmit={onSubmit}

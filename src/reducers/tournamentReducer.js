@@ -26,6 +26,9 @@ import {
     DELETE_TOURNAMENT_PENDING,
     TOURNAMENT_DELETED,
     ERROR_IN_TORUNAMENT_DELETE,
+    EDIT_TOURNAMENT_PENDING,
+    TOURNAMENT_EDITED,
+    ERROR_IN_TOURNAMENT_EDIT,
 } from '../actions/types';
 
 const initialState = {
@@ -47,6 +50,7 @@ export default function (state = initialState, { payload, type }) {
         case FETCH_TOURNAMENT_GROUPS:
         case GENERATE_TOURNAMENT_GROUP_PENDING:
         case DELETE_TOURNAMENT_PENDING:
+        case EDIT_TOURNAMENT_PENDING:
             return {
                 ...state,
                 pendings: {
@@ -120,6 +124,15 @@ export default function (state = initialState, { payload, type }) {
                     delete_tournament: false
                 }
             };
+        case TOURNAMENT_EDITED:
+            return {
+                ...state,
+                info: payload,
+                pendings: {
+                    ...state.pendings,
+                    edit_info: false
+                }
+            };
         case ERROR_IN_TOURNAMENT_INFO_FETCH:
         case ERROR_IN_TOURNAMENT_TEAMS_FETCH:
         case ERROR_IN_TEAM_CREATE:
@@ -129,6 +142,7 @@ export default function (state = initialState, { payload, type }) {
         case ERROR_IN_TOURNAMENT_GROUPS_FETCH:
         case ERROR_IN_GENERATE_TOURNAMENT_GROUPS:
         case ERROR_IN_TORUNAMENT_DELETE:
+        case ERROR_IN_TOURNAMENT_EDIT:
             return {
                 ...state,
                 pendings: {

@@ -27,6 +27,9 @@ import {
     DELETE_TOURNAMENT_PENDING,
     TOURNAMENT_DELETED,
     ERROR_IN_TORUNAMENT_DELETE,
+    EDIT_TOURNAMENT_PENDING,
+    TOURNAMENT_EDITED,
+    ERROR_IN_TOURNAMENT_EDIT,
 } from './types';
 import store from '../store';
 import axios from 'axios';
@@ -71,6 +74,40 @@ export const fetchInfo = () => dispatch => {
 				dispatch({
 					type: ERROR_IN_TOURNAMENT_INFO_FETCH,
 					payload: 'info'
+				});
+				reject(err);
+			})
+	);
+};
+
+export const editTournament = name => dispatch => {
+    dispatch({
+		type: EDIT_TOURNAMENT_PENDING,
+		payload: 'edit_info'
+	});
+
+	return new Promise((resolve, reject) =>
+		axios
+			.post(`${API_URL}/edit_tournament.php`, { name })
+			.then(({ data }) => {
+				if (data.code === 1) {
+					dispatch({
+						type: TOURNAMENT_EDITED,
+						payload: data.tournament
+					});
+					resolve();
+				} else {
+					throw new Error(data.message || 'Errore sconosciuto');
+				}
+			})
+			.catch(err => {
+				const { response } = err;
+				if (response && response.data && response.data.message) {
+					err.message = response.data.message;
+				}
+				dispatch({
+					type: ERROR_IN_TOURNAMENT_EDIT,
+					payload: 'create_info'
 				});
 				reject(err);
 			})

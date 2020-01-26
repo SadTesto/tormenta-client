@@ -1,53 +1,68 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { List, Button, Icon, Empty, Card } from 'antd';
+import { Row, Col, Button, Card, Collapse } from 'antd';
 
-const GroupsListCard = ({ groups, setActive }) => (
-    <Card title="Gironi" bordered={true} bodyStyle={{ padding: '10px 0' }}>
-        <List
-            dataSource={groups}
-            renderItem={group => (
-                <List.Item
-                    actions={[
-                        <Button 
-                            type="link" 
-                            block 
-                            onClick={() => 
-                                setActive({ 
-                                    ...group,
-                                    matches_fetched: false
-                                })
-                            }
-                            style={group.active === true ? { color: '#fff' } : null}
-                        >
-                            Vedi
-                            <Icon type="right" />
-                        </Button>
-                    ]}
-                    style={{
-                        paddingLeft: 20,
-                        backgroundColor: group.active === true ? '#188fff' : 'transparent',
-                        color: group.active === true ? '#fff' : '#000'
-                    }}
-                >
-                    {group.name}
-                </List.Item>
-            )}
-            locale={{
-                emptyText: (
-                    <Empty
-                        image={Empty.PRESENTED_IMAGE_SIMPLE}
-                        description="Nessun girone trovato"
-                    />
-                )
-            }}
-        />
-    </Card>
+const { Panel } = Collapse;
+
+const GroupsListCard = ({ groups, setActive, action }) => (
+	<Card
+		title="Gironi"
+		bordered={true}
+		bodyStyle={{ padding: 0, paddingTop: 1 }}
+	>
+		<Collapse style={{ border: 'none' }}>
+			{groups.map((group, index) => (
+				<Panel header={group.name} key={index}>
+					<Row>
+						<Col span={24} lg={12} style={{ paddingRight: 7 }}>
+							<Button
+								type={
+									group.active && action === 'get_ranking'
+										? 'primary'
+										: 'default'
+								}
+								block
+								onClick={() =>
+									setActive({
+										...group,
+										fetched: false,
+										action: 'get_ranking'
+									})
+								}
+							>
+								Visualizza classifica
+							</Button>
+						</Col>
+						<Col span={24} lg={12} style={{ paddingLeft: 7 }}>
+							<Button
+								type={
+									group.active && action === 'get_matches'
+										? 'primary'
+										: 'default'
+								}
+								block
+								onClick={() =>
+									setActive({
+										...group,
+										fetched: false,
+										action: 'get_matches'
+									})
+								}
+							>
+								Visualizza Partite
+							</Button>
+						</Col>
+					</Row>
+				</Panel>
+			))}
+		</Collapse>
+	</Card>
 );
 
 GroupsListCard.propTypes = {
 	groups: PropTypes.array.isRequired,
-	setActive: PropTypes.func.isRequired
+	setActive: PropTypes.func.isRequired,
+	action: PropTypes.string
 };
 
 export default GroupsListCard;

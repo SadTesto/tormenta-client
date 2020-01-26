@@ -17,10 +17,11 @@ import axios from 'axios';
 const Matches = ({ tournament, fetchGroups, fetchTeams, generateGroups }) => {
 	const [activeGroup, setActiveGroup] = useState({
 		id: null,
-		name: null,
-		matches_fetched: false
+        name: null,
+        action: null,
+		fetched: false
 	});
-    const [matches, setMatches] = useState([]);
+    const [fetchResult, setFetchResult] = useState([]);
     const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
@@ -28,13 +29,17 @@ const Matches = ({ tournament, fetchGroups, fetchTeams, generateGroups }) => {
 			try {
                 setLoading(true);
 				const resp = await axios.get(
-					`http://dev.tronweb.it/tormenta-server/get_matches.php?group_id=${activeGroup.id}`
+					`http://dev.tronweb.it/tormenta-server/${activeGroup.action}.php?group_id=${activeGroup.id}`
 				);
                 const { data, response } = resp;
                 setLoading(false);
-				setActiveGroup({ ...activeGroup, matches_fetched: true });
+				setActiveGroup({ ...activeGroup, fetched: true });
 				if (data && data.code === 1) {
-					setMatches(data.matches);
+                    if (activeGroup.action === 'get_matches') {
+                        setFetchResult(data.matches);
+                    } else if (activeGroup.action === 'get_ranking') {
+                        setFetchResult(data.ranking);
+                    }
 				} else {
 					let errorMessage = 'Errore inaspettato';
 					if (response && response.data && response.data.message) {
@@ -52,10 +57,10 @@ const Matches = ({ tournament, fetchGroups, fetchTeams, generateGroups }) => {
 				});
 			}
 		}
-		if (activeGroup.id !== null && activeGroup.matches_fetched === false) {
+		if (activeGroup.id !== null && activeGroup.fetched === false) {
 			fetchMatches(activeGroup);
 		}
-	}, [activeGroup, matches]);
+	}, [activeGroup, fetchResult]);
 
 	const { groups, teams, pendings } = tournament;
 
@@ -93,17 +98,20 @@ const Matches = ({ tournament, fetchGroups, fetchTeams, generateGroups }) => {
 									? { ...group, active: true }
 									: group
 							)}
-							setActive={setActiveGroup}
+                            setActive={setActiveGroup}
+                            action={activeGroup.action}
 						/>
 					)}
 				</Col>
 				<Col xs={24} lg={14} xl={12}>
 					<MatchesTable
+                        groupName={activeGroup.name}
 						teams={teams}
-						matches={matches.map((match, index) => ({
+						matches={fetchResult.map((match, index) => ({
 							key: (index + 1),
 							...match
                         }))}
+                        action={activeGroup.action}
                         loading={loading}
 					/>
 				</Col>

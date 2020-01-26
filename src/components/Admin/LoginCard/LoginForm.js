@@ -6,7 +6,8 @@ const LoginForm = ({
 	values,
 	errors,
 	handleChange,
-	handleSubmit
+    handleSubmit,
+    isSubmitting
 }) => (
     <Form onSubmit={handleSubmit} className="login-form">
         <Form.Item
@@ -26,6 +27,7 @@ const LoginForm = ({
                 placeholder="Username"
                 value={values.username}
                 onChange={handleChange}
+                disabled={isSubmitting}
             />
         </Form.Item>
         <Form.Item 
@@ -46,6 +48,7 @@ const LoginForm = ({
                 placeholder="Password"
                 value={values.password}
                 onChange={handleChange}
+                disabled={isSubmitting}
             />
         </Form.Item>
         <Form.Item style={{ margin: 0 }}>
@@ -54,16 +57,18 @@ const LoginForm = ({
                 name="rememberMe"
                 checked={values.rememberMe}
                 onChange={handleChange}
+                disabled={isSubmitting}
             >
-                Remember me
+                Ricordami
             </Checkbox>
             <Button
                 type="primary"
                 htmlType="submit"
                 className="login-form-button"
                 style={{ float: 'right' }}
+                loading={isSubmitting}
             >
-                Log in
+                Entra
             </Button>
         </Form.Item>
     </Form>
@@ -73,7 +78,8 @@ LoginForm.propTypes = {
     values: PropTypes.object.isRequired,
 	errors: PropTypes.object.isRequired,
 	handleChange: PropTypes.func.isRequired,
-	handleSubmit: PropTypes.func.isRequired
-}
+    handleSubmit: PropTypes.func.isRequired,
+    isSubmitting: PropTypes.bool.isRequired
+};
 
 export default LoginForm;

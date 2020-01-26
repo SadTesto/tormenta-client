@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Button } from 'antd';
+import { Row, Col, Form, Input, Button } from 'antd';
 
 const TForm = ({
     values,
@@ -34,7 +34,6 @@ const TForm = ({
                 placeholder="Titolo"
                 value={values.title}
                 onChange={handleChange}
-                disabled={disabled}
             />
         </Form.Item>
         <Form.Item 
@@ -54,13 +53,20 @@ const TForm = ({
                 disabled={disabled}
             />
         </Form.Item>
-        <Form.Item style={{ margin: 0, float: 'right' }}>
+        <Row>
+            <Col span={24} style={{ textAlign: 'right' }}>
             {buttons.map(({ type, text, ...rest }, index) =>
-                <Button key={index} type={type} {...rest}>
+                <Button 
+                    key={index} 
+                    type={type} 
+                    style={{ marginLeft: 8, ...rest.style}}
+                    {...rest} 
+                >
                     {text}
                 </Button>
             )}
-        </Form.Item>
+            </Col>
+        </Row>
     </Form>
 );
 

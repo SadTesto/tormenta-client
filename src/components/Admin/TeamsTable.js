@@ -2,8 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Table, Button, Divider, Popconfirm, Empty } from 'antd';
 
-const TeamsTable = ({ teams, editTeam, deleteTeam, loading }) => {
-    const data = teams.map((team, index) => ({ ...team, key: (index + 1) }));
+const TeamsTable = ({
+	teams,
+	editTeam,
+	deleteTeam,
+	deleteDisabled,
+	loading
+}) => {
+	const data = teams.map((team, index) => ({ ...team, key: index + 1 }));
 	const columns = [
 		{
 			title: '#',
@@ -34,9 +40,16 @@ const TeamsTable = ({ teams, editTeam, deleteTeam, loading }) => {
 						title="Confermi?"
 						okText="Si"
 						cancelText="No"
-						onConfirm={() => deleteTeam(record.id)}
+						onConfirm={() =>
+							deleteDisabled === true
+								? null
+								: deleteTeam(record.id)
+						}
+						disabled={deleteDisabled === true}
 					>
-						<Button type="link">Elimina</Button>
+						<Button type="link" disabled={deleteDisabled === true}>
+							Elimina
+						</Button>
 					</Popconfirm>
 				</span>
 			)
@@ -59,8 +72,8 @@ const TeamsTable = ({ teams, editTeam, deleteTeam, loading }) => {
 							description="Nessuna squadra trovata"
 						/>
 					)
-                }}
-                loading={loading === true}
+				}}
+				loading={loading === true}
 			/>
 		</Card>
 	);
@@ -69,8 +82,9 @@ const TeamsTable = ({ teams, editTeam, deleteTeam, loading }) => {
 TeamsTable.propTypes = {
 	teams: PropTypes.array.isRequired,
 	editTeam: PropTypes.func.isRequired,
-    deleteTeam: PropTypes.func.isRequired,
-    loading: PropTypes.bool
+	deleteTeam: PropTypes.func.isRequired,
+	deleteDisabled: PropTypes.bool,
+	loading: PropTypes.bool
 };
 
 export default TeamsTable;

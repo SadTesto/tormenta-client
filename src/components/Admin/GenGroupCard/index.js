@@ -41,7 +41,7 @@ const GenGroupCard = ({ onSubmit }) => {
 
     return (
         <Card bordered={true} title="Gironi">
-            <Paragraph>Seleziona il numero di gironi da generare</Paragraph>
+            <Paragraph>Seleziona la modalità di generazione dei gironi:</Paragraph>
             <Formik
                 initialValues={{
                     groups: 1

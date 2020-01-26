@@ -13,9 +13,9 @@ const NavItems = [
     },
     {
         id: 3,
-        text: 'Partite',
+        text: 'Gironi',
         icon: 'unordered-list',
-        location: '/partite'
+        location: '/gironi'
     },
     {
         id: 4,

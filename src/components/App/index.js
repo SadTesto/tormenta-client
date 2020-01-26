@@ -73,7 +73,7 @@ const App = () => (
                                         exact
                                     />
                                     <Route
-                                        path="/partite"
+                                        path="/gironi"
                                         component={Matches}
                                         exact
                                     />

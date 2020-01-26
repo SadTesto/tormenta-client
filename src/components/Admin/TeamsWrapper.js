@@ -19,7 +19,7 @@ const TeamsWrapper = ({
 	});
 	const [loading, setLoading] = useState(false);
 
-    const { info, teams } = tournament;
+    const { info, teams, groups } = tournament;
     
 	return (
 		<Fragment>
@@ -88,7 +88,8 @@ const TeamsWrapper = ({
 									content: message
 								})
 							)
-					}
+                    }
+                    deleteDisabled={groups.length > 0}
 				/>
 			</Col>
 			<Col span={24} lg={8} xl={4}>
@@ -117,6 +118,15 @@ const TeamsWrapper = ({
 							style={{ marginBottom: 10 }}
 						/>
 					) : null}
+                    {groups.length > 0 ? (
+                        <Alert
+                            message={"I gironi sono gia' stati generati, "+
+                            "quindi sara' possibile solo modificare il nome delle squadre"}
+							type="warning"
+							showIcon={true}
+							style={{ marginBottom: 10 }}
+						/>
+                    ) : null}
 					{extraButtons}
 				</Card>
 			</Col>
