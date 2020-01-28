@@ -39,7 +39,7 @@ const getId = pathname => {
 
 const App = () => (
     <Provider store={store}>
-        <BrowserRouter>
+        <BrowserRouter basename="/tormenta/">
             <Fragment>
                 <Switch>
                     <Route

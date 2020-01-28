@@ -7,10 +7,11 @@ import MatchForm from './MachForm';
 const MatchModal = ({ match, visible, onSubmit, showModal }) => (
     <Formik
         initialValues={{
+            id: match.id,
             teamA: match.teamA,
             teamB: match.teamB,
-            teamA_score: match.teamA_score || 0,
-            teamB_score: match.teamB_score || 0,
+            teamA_score: match.scoreA || 0,
+            teamB_score: match.scoreB || 0,
         }}
         onReset={(values) => {
             showModal(false);

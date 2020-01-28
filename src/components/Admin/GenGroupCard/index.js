@@ -8,12 +8,12 @@ import axios from 'axios';
 const { Paragraph } = Typography;
 
 const GenGroupCard = ({ onSubmit }) => {
-    const [options, setOptions] = useState([]);
+    const [options, setOptions] = useState(null);
 
     useEffect(() => {
         async function fetchOptions() {
             try {
-                const resp = await axios.get("http://dev.tronweb.it/tormenta-server/generate_groups.php");
+                const resp = await axios.get("http://dev.tronweb.it/tormenta-server/get_case.php");
                 const { data, response } = resp;
                 if (data && data.code === 1) {
                     setOptions(data.groups);
@@ -34,17 +34,17 @@ const GenGroupCard = ({ onSubmit }) => {
                 });
             }
 		}
-        if (options.length === 0) {
+        if (options === null) {
             fetchOptions();
         }
     }, [options]);
 
     return (
-        <Card bordered={true} title="Gironi">
+        <Card bordered={true} title="Gironi" loading={options === null}>
             <Paragraph>Seleziona la modalità di generazione dei gironi:</Paragraph>
             <Formik
                 initialValues={{
-                    groups: 1
+                    groups: 0
                 }}
                 onSubmit={onSubmit}
             >
@@ -54,7 +54,23 @@ const GenGroupCard = ({ onSubmit }) => {
                     handleSubmit
                 }) => (
                     <GenGroupForm
-                        options={[1]}
+                        options={(options || []).map(
+                            opt => {
+                                let text;
+                                if (opt.length === 1) {
+                                    text = `1 girone da ${opt[0]} squadre`;
+                                } else {
+                                    if (opt.every(el => el === opt[0])) {
+                                        text = `${opt.length} gironi da ${opt[0]} squadre`;
+                                    } else {
+                                        text = '';
+                                        opt.forEach(t => text += `1 girone da ${t} squadre, `);
+                                        text = text.substring(0, text.length - 2);
+                                    }
+                                }
+                                return text;
+                            }
+                        )}
                         values={values}
                         handleSubmit={handleSubmit}
                         handleChange={handleChange}

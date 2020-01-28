@@ -49,8 +49,10 @@ const TournamentInfoCard = ({ info, exists, editTournament, deleteTournament }) 
                     ) : (
                         <TournamentInfo 
                             info={info} 
+                            exists={exists}
                             setEditing={setEditing} 
                             deleteTournament={deleteTournament}
+                            editTournament={editTournament}
                         />
                     )}
                 </Fragment>
