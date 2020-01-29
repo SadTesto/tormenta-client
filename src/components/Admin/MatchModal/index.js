@@ -34,6 +34,7 @@ const MatchModal = ({ match, visible, onSubmit, showModal }) => (
                 onOk={() => submitForm()}
                 cancelText="Annulla"
                 okText="Salva"
+                disableEnforceFocus
             >
                 <MatchForm
                     values={values}

@@ -35,6 +35,7 @@ const TeamModal = ({
                 onOk={() => submitForm()}
                 okText="Salva"
                 cancelText="Annulla"
+                disableEnforceFocus
             >
                 <TeamForm
                     values={values}
