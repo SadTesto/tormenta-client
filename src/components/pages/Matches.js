@@ -29,7 +29,8 @@ const Matches = ({
 		fetched: false
 	});
 	const [fetchResult, setFetchResult] = useState([]);
-	const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const refreshResults = () => setActiveGroup({ ...activeGroup, fetched: false })
 
 	useEffect(() => {
 		async function fetchMatches(activeGroup) {
@@ -124,7 +125,8 @@ const Matches = ({
 							...match
 						}))}
 						updateResult={updateMatchResults}
-						action={activeGroup.action}
+                        action={activeGroup.action}
+                        refreshResults={refreshResults}
 						loading={loading}
 					/>
 				</Col>

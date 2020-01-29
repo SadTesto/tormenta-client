@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Card, message } from 'antd';
+import { Card, Typography, message } from 'antd';
 import axios from 'axios';
+
+const { Text } = Typography;
 
 const NextMatchesCard = ({ tournament }) => {
 	const { pendings, teams } = tournament;
@@ -18,21 +20,21 @@ const NextMatchesCard = ({ tournament }) => {
 				);
 				const { data } = resp;
 				if (data && data.code === 1) {
-                    setMatches(data.matches);
-				} 
+					setMatches(data.matches);
+				}
 				setFetching(false);
 			} catch (err) {
-                const { response } = err;
+				const { response } = err;
 				if (response && response.data && response.data.message) {
-                    const { data } = response;
-                    if (data) {
-                        if (data.message) {
-                            err.message = data.message;
-                        }
-                        if (data.code === 0) {
-                            setMatches([]);
-                        }
-                    }
+					const { data } = response;
+					if (data) {
+						if (data.message) {
+							err.message = data.message;
+						}
+						if (data.code === 0) {
+							setMatches([]);
+						}
+					}
 					err.message = response.data.message;
 				}
 				message.error(err.message);
@@ -54,14 +56,23 @@ const NextMatchesCard = ({ tournament }) => {
 			title="Prossime partite"
 			loading={pendings.teams === true || fetching}
 		>
-			<ul>
-				{(matches || []).map((match, index) => (
-					<li key={index}>
-						{teams.find(({ id }) => id === match.teamA).name} vs{' '}
-						{teams.find(({ id }) => id === match.teamB).name}
-					</li>
-				))}
-			</ul>
+			{matches && matches.length === 0 ? (
+				<Text
+					disabled
+					style={{ display: 'block', textAlign: 'center' }}
+				>
+					Nessuna partita in programma
+				</Text>
+			) : (
+				<ul>
+					{(matches || []).map((match, index) => (
+						<li key={index}>
+							{teams.find(({ id }) => id === match.teamA).name} vs{' '}
+							{teams.find(({ id }) => id === match.teamB).name}
+						</li>
+					))}
+				</ul>
+			)}
 		</Card>
 	);
 };

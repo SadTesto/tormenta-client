@@ -50,8 +50,8 @@ const GenGroupCard = ({ onSubmit }) => {
             >
                 {({
                     values,
-                    handleChange,
-                    handleSubmit
+                    handleSubmit,
+                    setFieldValue
                 }) => (
                     <GenGroupForm
                         options={(options || []).map(
@@ -73,7 +73,7 @@ const GenGroupCard = ({ onSubmit }) => {
                         )}
                         values={values}
                         handleSubmit={handleSubmit}
-                        handleChange={handleChange}
+                        setFieldValue={setFieldValue}
                     />
                 )}
             </Formik>

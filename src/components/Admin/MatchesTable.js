@@ -8,7 +8,8 @@ const MatchesTable = ({
 	matches,
 	teams,
 	action,
-	updateResult,
+    updateResult,
+    refreshResults,
 	loading
 }) => {
 	const [modalVisible, setModalVisible] = useState(false);
@@ -35,7 +36,8 @@ const MatchesTable = ({
 							setActiveMatch({ teamA: null, teamB: null });
 							message.success(
 								'Risultato aggiornato con successo'
-							);
+                            );
+                            refreshResults();
 						})
 						.catch(({ message }) => {
 							setModalVisible(false);
@@ -174,6 +176,7 @@ MatchesTable.propTypes = {
 	teams: PropTypes.array.isRequired,
     action: PropTypes.string,
     updateResult: PropTypes.func.isRequired,
+    refreshResults: PropTypes.func.isRequired,
 	loading: PropTypes.bool
 };
 

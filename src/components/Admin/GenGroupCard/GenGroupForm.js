@@ -4,7 +4,7 @@ import { Row, Col, Form, Select, Button } from 'antd';
 
 const { Option } = Select;
 
-const GenGroupForm = ({ options, values, handleChange, handleSubmit }) => (
+const GenGroupForm = ({ options, values, setFieldValue, handleSubmit }) => (
 	<Form
 		onSubmit={handleSubmit}
 		layout="inline"
@@ -13,19 +13,20 @@ const GenGroupForm = ({ options, values, handleChange, handleSubmit }) => (
 		<Row>
 			<Col xs={24} md={18}>
 				<Form.Item style={{ display: 'block' }}>
-					<select
+					<Select
 						id="groups"
-						name="groups"
-						htmltype="select"
-						onChange={handleChange}
+                        name="groups"
+                        type="select"
+						htmlType="select"
+						onChange={val => setFieldValue("groups", val)}
 						value={values.groups}
 					>
 						{options.map((opt, index) => (
-							<option value={index} key={index}>
+							<Option value={index} key={index}>
 								{opt}
-							</option>
+							</Option>
 						))}
-					</select>
+					</Select>
 				</Form.Item>
 			</Col>
 			<Col xs={24} md={6}>
@@ -42,7 +43,7 @@ const GenGroupForm = ({ options, values, handleChange, handleSubmit }) => (
 GenGroupForm.propTypes = {
 	options: PropTypes.array.isRequired,
 	values: PropTypes.object.isRequired,
-	handleChange: PropTypes.func.isRequired,
+	setFieldValue: PropTypes.func.isRequired,
 	handleSubmit: PropTypes.func.isRequired
 };
 
