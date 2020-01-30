@@ -11,7 +11,6 @@ const TeamModal = ({
 	onSubmit,
 	showModal
 }) => (
-	
     <Formik
         initialValues={{
             id: team.id || '',
@@ -22,20 +21,22 @@ const TeamModal = ({
             showModal(false);
         }}
         onReset={(values, { resetForm }) => {
-            showModal(false);
             resetForm();
+            showModal(false);
         }}
         enableReinitialize={true}
     >
-        {({ values, errors, handleSubmit, handleReset, handleChange, submitForm }) => (
+        {({ values, errors, handleSubmit, handleReset, handleChange, submitForm, resetForm }) => (
             <Modal
                 title={title}
                 visible={visible}
-                onCancel={handleReset}
+                onCancel={() => {
+                    resetForm();
+                    showModal(false);
+                }}
                 onOk={() => submitForm()}
                 okText="Salva"
                 cancelText="Annulla"
-                disableEnforceFocus
             >
                 <TeamForm
                     values={values}

@@ -25,12 +25,16 @@ const MatchModal = ({ match, visible, onSubmit, showModal }) => (
             handleChange,
             handleSubmit,
             handleReset,
-            submitForm
+            submitForm,
+            resetForm
         }) => (
             <Modal
                 title="Risultato"
                 visible={visible}
-                onCancel={handleReset}
+                onCancel={() => {
+                    resetForm();
+                    showModal(false);
+                }}
                 onOk={() => submitForm()}
                 cancelText="Annulla"
                 okText="Salva"
