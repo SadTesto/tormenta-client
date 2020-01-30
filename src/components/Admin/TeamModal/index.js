@@ -11,32 +11,26 @@ const TeamModal = ({
 	onSubmit,
 	showModal
 }) => (
-    <Modal
-        title={title}
-        visible={visible}
-        onCancel={() => showModal(false)}
-        onOk={() => {
-            console.log("ok")
+    <Formik
+        initialValues={{
+            id: team.id || '',
+            name: team.name || ''
+        }}
+        onSubmit={(values, { setSubmitting, setErrors, resetForm }) => {
+            onSubmit(values, { setSubmitting, setErrors, resetForm });
             showModal(false);
         }}
-        okText="Salva"
-        cancelText="Annulla"
+        enableReinitialize={true}
     >
-        <Formik
-            initialValues={{
-                id: team.id || '',
-                name: team.name || ''
-            }}
-            onSubmit={(values, { setSubmitting, setErrors, resetForm }) => {
-                onSubmit(values, { setSubmitting, setErrors, resetForm });
-                showModal(false);
-            }}
-            onReset={(values, { resetForm }) => {
-                showModal(false);
-            }}
-            enableReinitialize={true}
-        >
-            {({ values, errors, handleSubmit, handleReset, handleChange }) => (
+        {({ values, errors, handleSubmit, handleReset, handleChange, submitForm }) => (
+            <Modal
+                title={title}
+                visible={visible}
+                onCancel={() => showModal(false)}
+                onOk={() => submitForm()}
+                okText="Salva"
+                cancelText="Annulla"
+            >
                 <TeamForm
                     values={values}
                     errors={errors}
@@ -44,9 +38,9 @@ const TeamModal = ({
                     handleReset={handleReset}
                     handleChange={handleChange}
                 />
-            )}
-        </Formik>
-    </Modal>
+            </Modal>
+        )}
+    </Formik>
 );
 
 TeamModal.propTypes = {

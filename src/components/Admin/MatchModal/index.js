@@ -13,11 +13,8 @@ const MatchModal = ({ match, visible, onSubmit, showModal }) => (
             teamA_score: match.scoreA || 0,
             teamB_score: match.scoreB || 0,
         }}
-        onReset={(values) => {
-            showModal(false);
-        }}
-        enableReinitialize={true}
         onSubmit={onSubmit}
+        enableReinitialize={true}
     >
         {({
             values,
@@ -25,20 +22,15 @@ const MatchModal = ({ match, visible, onSubmit, showModal }) => (
             handleChange,
             handleSubmit,
             handleReset,
-            submitForm,
-            resetForm
+            submitForm
         }) => (
             <Modal
                 title="Risultato"
                 visible={visible}
-                onCancel={() => {
-                    resetForm();
-                    showModal(false);
-                }}
+                onCancel={() => showModal(false)}
                 onOk={() => submitForm()}
                 cancelText="Annulla"
                 okText="Salva"
-                disableEnforceFocus
             >
                 <MatchForm
                     values={values}
