@@ -15,7 +15,7 @@ import LoadingPage from '../Admin/LoadingPage';
 import GenGroupCard from '../Admin/GenGroupCard/';
 import axios from 'axios';
 
-const Matches = ({
+const Groups = ({
 	tournament,
 	fetchGroups,
 	fetchTeams,
@@ -70,7 +70,8 @@ const Matches = ({
 		}
 	}, [activeGroup, fetchResult]);
 
-	const { groups, teams, pendings } = tournament;
+    const { groups, teams, pendings } = tournament;
+    const groupsNoPo = groups.filter(g => g.is_po === false);
 
 	if (pendings.groups === undefined) {
 		fetchGroups().catch(({ message }) =>
@@ -87,7 +88,7 @@ const Matches = ({
 		return (
 			<Row>
 				<Col xs={24} lg={10} xl={6}>
-					{groups.length === 0 ? (
+					{groupsNoPo.length === 0 ? (
 						<GenGroupCard
 							onSubmit={values =>
 								generateGroups(+values.groups)
@@ -106,7 +107,7 @@ const Matches = ({
 						/>
 					) : (
 						<GroupsListCard
-							groups={groups.map(group =>
+							groups={groupsNoPo.map(group =>
 								group.id === activeGroup.id
 									? { ...group, active: true }
 									: group
@@ -140,7 +141,7 @@ const Matches = ({
 	}
 };
 
-Matches.propTypes = {
+Groups.propTypes = {
 	tournament: PropTypes.object.isRequired,
 	fetchGroups: PropTypes.func.isRequired,
 	fetchTeams: PropTypes.func.isRequired,
@@ -157,4 +158,4 @@ export default connect(mapStateToProps, {
 	fetchTeams,
     generateGroups,
     updateMatchResults
-})(Matches);
+})(Groups);

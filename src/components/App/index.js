@@ -15,7 +15,8 @@ import Dashboard from '../pages/Dashboard';
 import Settings from '../pages/Settings';
 import NewTournament from '../pages/NewTournament';
 import Teams from '../pages/Teams';
-import Matches from '../pages/Matches';
+import Groups from '../pages/Groups';
+import PlayOffs from '../pages/PlayOffs';
 import NotFound from '../pages/NotFound';
 
 const pathPrefix = '';
@@ -74,7 +75,12 @@ const App = () => (
                                     />
                                     <Route
                                         path="/gironi"
-                                        component={Matches}
+                                        component={Groups}
+                                        exact
+                                    />
+                                    <Route
+                                        path="/playoff"
+                                        component={PlayOffs}
                                         exact
                                     />
                                     <Route

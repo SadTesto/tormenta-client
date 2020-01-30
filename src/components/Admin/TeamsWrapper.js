@@ -68,7 +68,7 @@ const TeamsWrapper = ({
 				}}
 				showModal={setModalVisible}
 			/>
-			<Col span={24} lg={16} xl={12}>
+			<Col span={24} lg={16} xxl={12}>
 				<TeamsTable
 					teams={teams}
 					editTeam={team => {
@@ -92,7 +92,7 @@ const TeamsWrapper = ({
                     deleteDisabled={groups.length > 0}
 				/>
 			</Col>
-			<Col span={24} lg={8} xl={4}>
+			<Col span={24} lg={8} xxl={4}>
 				<Card bordered={true}>
 					<Button
 						type="primary"
@@ -130,7 +130,7 @@ const TeamsWrapper = ({
 					{extraButtons}
 				</Card>
 			</Col>
-			<Col span={24} xl={8}>
+			<Col span={24} xxl={8}>
 				<HelpCard
 					message={[
 						'Per aggiungere una nuova squadra clicca sul pulsante ' +

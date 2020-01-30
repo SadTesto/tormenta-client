@@ -19,6 +19,12 @@ const NavItems = [
     },
     {
         id: 4,
+        text: 'Playoff',
+        icon: 'unordered-list',
+        location: '/playoff'
+    },
+    {
+        id: 5,
         text: 'Impostazioni',
         icon: 'setting',
         location: '/impostazioni'

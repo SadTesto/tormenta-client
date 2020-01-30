@@ -14,7 +14,7 @@ const GroupsListCard = ({ groups, setActive, action }) => (
 			{groups.map((group, index) => (
 				<Panel header={group.name} key={index}>
 					<Row>
-						<Col span={24} lg={12} style={{ paddingRight: 7 }}>
+						<Col span={24} xxl={12}>
 							<Button
 								type={
 									group.active && action === 'get_ranking'
@@ -33,7 +33,7 @@ const GroupsListCard = ({ groups, setActive, action }) => (
 								Visualizza classifica
 							</Button>
 						</Col>
-						<Col span={24} lg={12} style={{ paddingLeft: 7 }}>
+						<Col span={24} xxl={12}>
 							<Button
 								type={
 									group.active && action === 'get_matches'
