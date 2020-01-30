@@ -32,7 +32,6 @@ const TeamModal = ({
                 showModal(false);
             }}
             onReset={(values, { resetForm }) => {
-                resetForm();
                 showModal(false);
             }}
             enableReinitialize={true}
