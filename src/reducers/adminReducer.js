@@ -6,7 +6,7 @@ import {
 } from '../actions/types';
 
 const initialState = {
-    authed: true,
+    authed: false,
     id: null,
     username: null,
     pendings: {}
