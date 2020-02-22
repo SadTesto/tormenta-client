@@ -50,7 +50,6 @@ const TForm = ({
                 max={40} 
                 value={values.teams}
                 onChange={handleChange}
-                disabled={disabled}
             />
         </Form.Item>
         <Row>
@@ -75,8 +74,7 @@ TForm.propTypes = {
     errors: PropTypes.object.isRequired,
     handleChange: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    buttons: PropTypes.array.isRequired,
-    disabled: PropTypes.bool.isRequired
+    buttons: PropTypes.array.isRequired
 };
 
 export default TForm;

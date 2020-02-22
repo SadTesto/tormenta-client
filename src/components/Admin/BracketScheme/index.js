@@ -1,16 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-
 import './index.css';
 
-const BracketScheme = ({ setMatch }) => (
+const groupsLabels = [
+    'Vincitore',
+    'Finale',
+    'Semifinali',
+    'Quarti di finale',
+    'Ottavi di finale',
+];
+
+const BracketScheme = ({ setMatch, groups }) => {
+
+    // STANDBY
+    let finalGroups = [];
+    if (groups.length === 1 && groups[0].teams !== 2) {
+        for (let i = groups[0].teams; i >= 2; i -= Math.pow(2, Math.log(i) / Math.log(2) - 1)) {
+            if (i === groups[0].teams) {
+                finalGroups.push(groups[0]);
+            } else {
+                finalGroups.push({
+                    id: 'None',
+                    name: 'PO_FASE_N',
+                    teams: i,
+                    is_po: true
+                });
+            }
+        }
+        finalGroups.push({
+            id: 'None',
+            name: 'PO_WINNER',
+            teams: 1,
+            is_po: true
+        })
+        console.log(finalGroups)
+    }
+
+    return (
 	<div className="tournament-container">
 		<div className="tournament-headers">
-			<h3>Ottavi di finale</h3>
-			<h3>Quarti di finale</h3>
-			<h3>Semifinali</h3>
-			<h3>Finale</h3>
-			<h3>Vincitore</h3>
+            {finalGroups.map((g, index, arr) => (
+                <h3 key={index}>{groupsLabels[(arr.length - 1) - index]}</h3>
+            ))}
 		</div>
 
 		<div className="tournament-brackets">
@@ -22,7 +53,8 @@ const BracketScheme = ({ setMatch }) => (
 					'C1 - 3ABF',
 					'E1 - D2',
 					'A1 - 3CDE',
-					'B2 - F2'
+                    'B2 - F2',
+                    'N1 - G1'
 				],
 				['QF1 - QF2', 'QF3 - QF4', 'QF5 - QF6', 'QF7 - QF8'],
 				['SF1 - SF2', 'SF3 - SF4'],
@@ -81,9 +113,11 @@ const BracketScheme = ({ setMatch }) => (
 		</div>
 	</div>
 );
+};
 
 BracketScheme.propTypes = {
-	setMatch: PropTypes.func.isRequired
+    setMatch: PropTypes.func.isRequired,
+    groups: PropTypes.array.isRequired
 };
 
 export default BracketScheme;

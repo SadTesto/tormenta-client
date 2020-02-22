@@ -19,7 +19,7 @@ const TournamentInfoCard = ({ info, exists, editTournament, deleteTournament }) 
                         <TournamentForm
                             info={info}
                             handleSubmit={(values, { setSubmitting }) => {
-                                editTournament(values.title)
+                                editTournament(values.title, values.teams)
                                     .then(() => {
                                         setSubmitting(false);
                                         setEditing(false);
@@ -44,7 +44,6 @@ const TournamentInfoCard = ({ info, exists, editTournament, deleteTournament }) 
                                     text: 'Annulla'
                                 }
                             ]}
-                            disabled={true}
                         />
                     ) : (
                         <TournamentInfo 

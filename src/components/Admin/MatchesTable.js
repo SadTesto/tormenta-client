@@ -25,29 +25,40 @@ const MatchesTable = ({
 				match={activeMatch}
 				showModal={setModalVisible}
 				visible={modalVisible}
-				onSubmit={values =>
-					updateResult(
-						values.id,
-						values.teamA_score,
-						values.teamB_score
-					)
-						.then(() => {
-							setModalVisible(false);
-							setActiveMatch({ teamA: null, teamB: null });
-							message.success(
-								'Risultato aggiornato con successo'
-                            );
-                            refreshResults();
-						})
-						.catch(({ message }) => {
-							setModalVisible(false);
-							setActiveMatch({ teamA: null, teamB: null });
-							Modal.error({
-								title: 'Errore',
-								content: message
-							});
-						})
-				}
+				onSubmit={(values, { setErrors, setSubmitting }) => {
+                    let errors = {};
+                    if (values.teamA_score < 0) {
+                        errors.teamA_score = 'Punteggio non valido';
+                        setSubmitting(false);
+                    } else if (values.teamB_score < 0) {
+                        errors.teamB_score = 'Punteggio non valido';
+                        setSubmitting(false);
+                    }
+                    setErrors(errors);
+                    if (Object.values(errors).length === 0) {
+                        updateResult(
+                            values.id,
+                            values.teamA_score,
+                            values.teamB_score
+                        )
+                            .then(() => {
+                                setModalVisible(false);
+                                setActiveMatch({ teamA: null, teamB: null });
+                                message.success(
+                                    'Risultato aggiornato con successo'
+                                );
+                                refreshResults();
+                            })
+                            .catch(({ message }) => {
+                                setModalVisible(false);
+                                setActiveMatch({ teamA: null, teamB: null });
+                                Modal.error({
+                                    title: 'Errore',
+                                    content: message
+                                });
+                            })
+                    }
+                }}
 			/>
 			<Card
 				title={

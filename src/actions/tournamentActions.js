@@ -83,7 +83,7 @@ export const fetchInfo = () => dispatch => {
 	);
 };
 
-export const editTournament = title => dispatch => {
+export const editTournament = (title, teams) => dispatch => {
 	dispatch({
 		type: EDIT_TOURNAMENT_PENDING,
 		payload: 'edit_info'
@@ -94,7 +94,7 @@ export const editTournament = title => dispatch => {
 
 	return new Promise((resolve, reject) =>
 		axios
-			.post(`${API_URL}/edit_tournament.php`, { id, title })
+			.post(`${API_URL}/edit_tournament.php`, { id, title, teams })
 			.then(({ data }) => {
 				if (data.code === 1) {
 					dispatch({
@@ -405,6 +405,45 @@ export const generateGroups = gcase => dispatch => {
 				reject(err);
 			})
 	);
+};
+
+export const generatePlayoffGroups = (startTeams, extraTeams) => dispatch => {
+    dispatch({
+		type: GENERATE_TOURNAMENT_GROUP_PENDING,
+		payload: 'po_groups'
+    });
+    
+    const { groups } = store.getState().tournament;
+
+    return new Promise((resolve, reject) =>
+        axios
+            .post(`${API_URL}/generation_po.php`, {
+                teams: startTeams,
+                extra_teams: extraTeams
+            })
+            .then(({ data }) => {
+                if (data.code === 1) {
+                    dispatch({
+                        type: TOURNAMENT_GROUP_GENERATED,
+                        payload: [...groups, data.group]
+                    });
+                    resolve();
+                } else {
+                    throw new Error(data.message || 'Errore sconosciuto');
+                }
+            })
+            .catch(err => {
+                const { response } = err;
+                if (response && response.data && response.data.message) {
+                    err.message = response.data.message;
+                }
+                dispatch({
+                    type: ERROR_IN_GENERATE_TOURNAMENT_GROUPS,
+                    payload: 'po_groups'
+                });
+                reject(err);
+            })
+    );
 };
 
 export const deleteTournament = () => dispatch => {
