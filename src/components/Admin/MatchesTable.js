@@ -34,6 +34,9 @@ const MatchesTable = ({
                         errors.teamB_score = 'Punteggio non valido';
                         setSubmitting(false);
                     }
+                    if (updateResult === null) {
+                        errors.teamA_score = "La funzione di aggiornamento risultati non e' valida";
+                    }
                     setErrors(errors);
                     if (Object.values(errors).length === 0) {
                         updateResult(
@@ -134,7 +137,8 @@ const MatchesTable = ({
 															setModalVisible(
 																true
 															);
-														}}
+                                                        }}
+                                                        disabled={updateResult === null}
 													>
 														{record.played ? 'Modifica' : 'Risultato'}
 													</Button>
@@ -157,7 +161,12 @@ const MatchesTable = ({
 											title: 'Punteggio',
 											dataIndex: 'score_group',
 											key: 'score_group'
-										}
+                                        },
+                                        {
+                                            title: 'Totale',
+                                            dataIndex: 'points',
+                                            key: 'points'
+                                        }
 								  ]
 						}
 						locale={{

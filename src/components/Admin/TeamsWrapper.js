@@ -113,7 +113,7 @@ const TeamsWrapper = ({
 					{info.teams === teams.length ? (
 						<Alert
 							message="Numero massimo di squadre raggiunto"
-							type="warning"
+							type="info"
 							showIcon={true}
 							style={{ marginBottom: 10 }}
 						/>
@@ -122,7 +122,7 @@ const TeamsWrapper = ({
                         <Alert
                             message={"I gironi sono gia' stati generati, "+
                             "quindi sara' possibile solo modificare il nome delle squadre"}
-							type="warning"
+							type="info"
 							showIcon={true}
 							style={{ marginBottom: 10 }}
 						/>
@@ -133,13 +133,11 @@ const TeamsWrapper = ({
 			<Col span={24} xxl={8}>
 				<HelpCard
 					message={[
-						'Per aggiungere una nuova squadra clicca sul pulsante ' +
-                        'blu "Aggiungi". Dopo aver inserito il nome della squadra ' +
-                        "e aver confermato, la squadra apparira' nella tabella qui " +
-                        'accanto.',
-						'Per modificare o eliminare una squadra utilizza gli appositi ' +
-                        'pulsanti nella tabella.',
-						`Ricorda di inserire un minimo di 3 squadre e un massimo di ${info.teams}.`
+                        'In questa pagina puoi aggiungere, modificare o eliminare '+
+                        'ogni squadra del torneo.',
+                        'Una volta generate le partite non sarà più possibile eliminare'+
+                        ' le squadre, ma solo rinominarle.',
+                        `Questo torneo opita ${info.teams} squadre.`
 					]}
 				/>
 			</Col>

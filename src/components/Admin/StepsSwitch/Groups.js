@@ -13,12 +13,7 @@ const Groups = ({ tournament, fetchGroups, generateGroups, nextStep }) => {
     const { pendings, groups } = tournament;
     
     if (pendings.groups === undefined) {
-        fetchGroups().catch(({ message }) => (
-            <Modal
-                title="Errore"
-                content={message}
-            />
-        ));
+        fetchGroups().catch(err => message.error(err.message));
     }
 
 	return (
@@ -28,11 +23,9 @@ const Groups = ({ tournament, fetchGroups, generateGroups, nextStep }) => {
 					<GenGroupCard
 						onSubmit={values =>
 							generateGroups(values.groups)
-								.then(() =>
-									message.success(
+								.then(() => message.success(
 										'Gironi generati con successo'
-									)
-								)
+                                ))
 								.catch(({ message }) =>
 									Modal.error({
 										title: 'Errore',
@@ -51,7 +44,10 @@ const Groups = ({ tournament, fetchGroups, generateGroups, nextStep }) => {
 					bordered={true}
 					bodyStyle={{ textAlign: 'center' }}
 				>
-					<Text disabled>Coming Soon.</Text>
+					<Text disabled>
+                        Potrai generare i playoff una volta giocate tutte le partite, 
+                        dalla pagina "Gironi"
+                    </Text>
 				</Card>
 			</Col>
 			<Col span={24} md={4}>

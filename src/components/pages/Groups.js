@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -7,13 +7,11 @@ import {
 	fetchTeams,
 	updateMatchResults
 } from '../../actions/tournamentActions';
-import { Row, Col, Modal, message } from 'antd';
+import { Row, Col, message } from 'antd';
 import HelpCard from '../Admin/HelpCard';
-import GroupsListCard from '../Admin/GroupsListCard';
-import MatchesTable from '../Admin/MatchesTable';
 import LoadingPage from '../Admin/LoadingPage';
 import GenGroupCard from '../Admin/GenGroupCard/';
-import axios from 'axios';
+import GroupsList from '../Admin/GroupsList/';
 
 const Groups = ({
 	tournament,
@@ -22,118 +20,62 @@ const Groups = ({
 	generateGroups,
 	updateMatchResults
 }) => {
-	const [activeGroup, setActiveGroup] = useState({
-		id: null,
-		name: null,
-		action: null,
-		fetched: false
-	});
-	const [fetchResult, setFetchResult] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const refreshResults = () => setActiveGroup({ ...activeGroup, fetched: false })
 
-	useEffect(() => {
-		async function fetchMatches(activeGroup) {
-			try {
-				setLoading(true);
-				const resp = await axios.get(
-					`http://dev.tronweb.it/tormenta-server/${activeGroup.action}.php?group_id=${activeGroup.id}`
-				);
-				const { data, response } = resp;
-				setLoading(false);
-				setActiveGroup({ ...activeGroup, fetched: true });
-				if (data && data.code === 1) {
-					if (activeGroup.action === 'get_matches') {
-						setFetchResult(data.matches);
-					} else if (activeGroup.action === 'get_ranking') {
-						setFetchResult(data.ranking);
-					}
-				} else {
-					let errorMessage = 'Errore inaspettato';
-					if (response && response.data && response.data.message) {
-						errorMessage = response.data.message;
-					}
-					Modal.error({
-						title: 'Errore',
-						content: errorMessage
-					});
-				}
-			} catch (e) {
-				Modal.error({
-					title: 'Errore',
-					content: e.message
-				});
-			}
-		}
-		if (activeGroup.id !== null && activeGroup.fetched === false) {
-			fetchMatches(activeGroup);
-		}
-	}, [activeGroup, fetchResult]);
-
-    const { groups, teams, pendings } = tournament;
+    const { pendings, groups } = tournament;
+	if (pendings.groups === undefined) {
+		fetchGroups().catch(err =>
+			message.error(err.message)
+		);
+	}
+	if (pendings.groups === undefined) {
+		fetchTeams().catch(err =>
+			message.error(err.message)
+		);
+    }
+    
     const groupsNoPo = groups.filter(g => g.is_po === false);
-
-	if (pendings.groups === undefined) {
-		fetchGroups().catch(({ message }) =>
-			Modal.error({ title: 'Errore', content: message })
-		);
-	}
-	if (pendings.groups === undefined) {
-		fetchTeams().catch(({ message }) =>
-			Modal.error({ title: 'Errore', content: message })
-		);
-	}
+    const poGroups = groups.filter(g => g.is_po === true);
 
 	if (pendings.groups === false && pendings.teams === false) {
 		return (
 			<Row>
-				<Col xs={24} lg={10} xl={6}>
-					{groupsNoPo.length === 0 ? (
-						<GenGroupCard
-							onSubmit={values =>
-								generateGroups(+values.groups)
-									.then(() =>
-										message.success(
-											'Gironi generati con successo'
-										)
-									)
-									.catch(({ message }) =>
-										Modal.error({
-											title: 'Errore',
-											content: message
-										})
-									)
-							}
-						/>
-					) : (
-						<GroupsListCard
-							groups={groupsNoPo.map(group =>
-								group.id === activeGroup.id
-									? { ...group, active: true }
-									: group
-							)}
-							setActive={setActiveGroup}
-							action={activeGroup.action}
-						/>
-					)}
-				</Col>
-				<Col xs={24} lg={14} xl={12}>
-					<MatchesTable
-						groupName={activeGroup.name}
-						teams={teams}
-						matches={fetchResult.map((match, index) => ({
-							key: index + 1,
-							...match
-						}))}
-						updateResult={updateMatchResults}
-                        action={activeGroup.action}
-                        refreshResults={refreshResults}
-						loading={loading}
-					/>
-				</Col>
-				<Col xs={24} xl={6}>
-					<HelpCard message={['To Do']} />
-				</Col>
+                {groupsNoPo.length === 0 ? (
+                    <GenGroupCard
+                        onSubmit={values =>
+                            generateGroups(+values.groups)
+                                .then(() =>
+                                    message.success(
+                                        'Gironi generati con successo'
+                                    )
+                                )
+                                .catch(err =>
+                                    message.error(err.message)
+                                )
+                        }
+                    />
+                ) : (
+                    <GroupsList
+                        teams={tournament.teams}
+                        groupsNoPo={groupsNoPo}
+                        groupButtons={['ranking', 'matches']}
+                        updateMatchResults={poGroups.length > 0 ? null : updateMatchResults}
+                    >
+                        <Col span={24} xl={6}>
+                            <HelpCard 
+                                message={[
+                                    'In questa pagina puoi: visualizzare le partite di ogni '+
+                                    'girone e modificarne il risultato, controllare la classifica'+
+                                    ' dei gironi, modificare il nome di ogni girone.',
+                                    'Una volta generate le partite dei playoff i risultati non '+
+                                    'saranno più modificabili, ma potrai comunque visualizzare i '+
+                                    'risultati delle singole partite e visionare la classifica '+
+                                    'di ogni girone.',
+                                    'Per iniziare clicca sul nome di un girone.'
+                                ]} 
+                            />
+                        </Col>
+                    </GroupsList>
+                )}
 			</Row>
 		);
 	} else {

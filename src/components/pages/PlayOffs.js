@@ -5,7 +5,7 @@ import { fetchGroups, fetchTeams } from '../../actions/tournamentActions';
 import { Row, Col, Card, message } from 'antd';
 import MatchModal from '../Admin/MatchModal/';
 import BracketScheme from '../Admin/BracketScheme/';
-import GeneratePlayoffsCard from '../Admin/GeneratePlayoffsCard';
+import GeneratePlayoffs from '../Admin/GeneratePlayoffs';
 import LoadingPage from '../Admin/LoadingPage';
 
 const PlayOffs = ({ tournament, fetchGroups, fetchTeams }) => {
@@ -61,9 +61,7 @@ const PlayOffs = ({ tournament, fetchGroups, fetchTeams }) => {
                         </Card>
                     </Col>
                 ) : (
-                    <Col span={24} lg={6}>
-                        <GeneratePlayoffsCard />
-                    </Col>
+                    <GeneratePlayoffs />
                 )}
 			</Row>
 		);
