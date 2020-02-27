@@ -66,10 +66,18 @@ const NextMatchesCard = ({ tournament }) => {
 			) : (
 				<ul>
 					{(matches || []).map((match, index) => (
-						<li key={index}>
-							{teams.find(({ id }) => id === match.teamA).name} vs{' '}
-							{teams.find(({ id }) => id === match.teamB).name}
-						</li>
+                        match.teamA.split('_')[0] !== 'winner' ? (
+                            <li key={index}>
+                                {(
+                                    teams.find(({ id }) => id === match.teamA) || 
+                                    { name: 'Squadra non trovata' }
+                                ).name} vs{' '}
+                                {(
+                                    teams.find(({ id }) => id === match.teamB) ||
+                                    { name: 'Squadra non trovata' }
+                                ).name}
+                            </li>
+                        ) : null
 					))}
 				</ul>
 			)}
