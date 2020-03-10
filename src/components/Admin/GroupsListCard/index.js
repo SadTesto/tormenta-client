@@ -1,67 +1,90 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Button, Card, Collapse } from 'antd';
+import { Card, Menu } from 'antd';
 
-const { Panel } = Collapse;
+const { SubMenu } = Menu;
 
-const GroupsListCard = ({ groups, setActive, action, buttons }) => (
-	<Card
-		title="Gironi"
-		bordered={true}
-		bodyStyle={{ padding: 0, paddingTop: 1 }}
-	>
-		<Collapse style={{ border: 'none' }}>
-			{groups.map((group, index) => (
-				<Panel header={group.name} key={index}>
-					<Row>
-                        {buttons.includes('ranking') ? (
-                            <Col span={24} xxl={buttons.length > 1 ? 12 : 24}>
-                                <Button
-                                    type={
-                                        group.active && action === 'get_ranking'
-                                            ? 'primary'
-                                            : 'default'
-                                    }
-                                    block
-                                    onClick={() =>
-                                        setActive({
-                                            ...group,
-                                            fetched: false,
-                                            action: 'get_ranking'
-                                        })
-                                    }
-                                >
-                                    Visualizza classifica
-                                </Button>
-                            </Col>
-                        ) : null}
-                        {buttons.includes('matches') ? (
-                            <Col span={24} xxl={buttons.length > 1 ? 12 : 24}>
-                                <Button
-                                    type={
-                                        group.active && action === 'get_matches'
-                                            ? 'primary'
-                                            : 'default'
-                                    }
-                                    block
-                                    onClick={() =>
-                                        setActive({
-                                            ...group,
-                                            fetched: false,
-                                            action: 'get_matches'
-                                        })
-                                    }
-                                >
-                                    Visualizza Partite
-                                </Button>
-                            </Col>
-                        ) : null}
-					</Row>
-				</Panel>
-			))}
-		</Collapse>
-	</Card>
-);
+const GroupsListCard = ({ groups, setActive, action, buttons }) => {
+	const [open, setOpen] = useState([]);
+
+	const rootSubmenuKeys = groups.map((g, index) => 'sub' + index);
+	const onOpenChange = openKeys => {
+		const latestOpenKey = openKeys.find(
+			key => openKeys.indexOf(key) === -1
+		);
+		if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+			setOpen(openKeys);
+		} else {
+			if (latestOpenKey) {
+				setOpen([latestOpenKey]);
+			} else {
+				setOpen([]);
+			}
+		}
+	};
+
+	return (
+		<Card
+			title="Gironi"
+			bordered={true}
+			bodyStyle={{ padding: 0, paddingTop: 1 }}
+		>
+			<Menu
+				mode="inline"
+				openKeys={open}
+				onOpenChange={onOpenChange}
+				style={{ border: 'none' }}
+			>
+				{groups.map((group, index) => (
+					<SubMenu title={group.name} key={'sub' + index}>
+                        {buttons.includes('edit') ? (
+							<Menu.Item
+								key="1"
+								onClick={() =>
+									setActive({
+										...group,
+										fetched: false,
+										action: 'edit'
+									})
+								}
+							>
+								Modifica
+							</Menu.Item>
+						) : null}
+						{buttons.includes('ranking') ? (
+							<Menu.Item
+								key="2"
+								onClick={() =>
+									setActive({
+										...group,
+										fetched: false,
+										action: 'get_ranking'
+									})
+								}
+							>
+								Visualizza Classifica
+							</Menu.Item>
+						) : null}
+						{buttons.includes('matches') ? (
+							<Menu.Item
+								key="3"
+								onClick={() =>
+									setActive({
+										...group,
+										fetched: false,
+										action: 'get_matches'
+									})
+								}
+							>
+								Visualizza Partite
+							</Menu.Item>
+						) : null}
+					</SubMenu>
+				))}
+			</Menu>
+		</Card>
+	);
+};
 
 GroupsListCard.propTypes = {
 	groups: PropTypes.array.isRequired,

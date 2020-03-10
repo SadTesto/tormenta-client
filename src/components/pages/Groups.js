@@ -5,7 +5,8 @@ import {
 	fetchGroups,
 	generateGroups,
 	fetchTeams,
-	updateMatchResults
+    updateMatchResults,
+    editGroup
 } from '../../actions/tournamentActions';
 import { Row, Col, message } from 'antd';
 import HelpCard from '../Admin/HelpCard';
@@ -18,7 +19,8 @@ const Groups = ({
 	fetchGroups,
 	fetchTeams,
 	generateGroups,
-	updateMatchResults
+    updateMatchResults,
+    editGroup
 }) => {
 
     const { pendings, groups } = tournament;
@@ -57,8 +59,9 @@ const Groups = ({
                     <GroupsList
                         teams={tournament.teams}
                         groupsNoPo={groupsNoPo}
-                        groupButtons={['ranking', 'matches']}
+                        groupButtons={['edit', 'ranking', 'matches']}
                         updateMatchResults={poGroups.length > 0 ? null : updateMatchResults}
+                        editGroup={editGroup}
                     >
                         <Col span={24} xl={6}>
                             <HelpCard 
@@ -88,7 +91,8 @@ Groups.propTypes = {
 	fetchGroups: PropTypes.func.isRequired,
 	fetchTeams: PropTypes.func.isRequired,
     generateGroups: PropTypes.func.isRequired,
-    updateMatchResults: PropTypes.func.isRequired
+    updateMatchResults: PropTypes.func.isRequired,
+    editGroup: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -99,5 +103,6 @@ export default connect(mapStateToProps, {
 	fetchGroups,
 	fetchTeams,
     generateGroups,
-    updateMatchResults
+    updateMatchResults,
+    editGroup
 })(Groups);

@@ -31,7 +31,10 @@ import {
     ERROR_IN_TOURNAMENT_EDIT,
     UPDATE_MATCH_RESULT_PENDING,
 	MATCH_RESULT_UPDATED,
-	ERROR_IN_MATCH_RESULT_UPDATE,
+    ERROR_IN_MATCH_RESULT_UPDATE,
+    EDIT_GROUP_PENDING,
+    GROUP_EDITED,
+    ERROR_IN_GROUP_EDIT,
 } from '../actions/types';
 
 const initialState = {
@@ -55,6 +58,7 @@ export default function (state = initialState, { payload, type }) {
         case DELETE_TOURNAMENT_PENDING:
         case EDIT_TOURNAMENT_PENDING:
         case UPDATE_MATCH_RESULT_PENDING:
+        case EDIT_GROUP_PENDING:
             return {
                 ...state,
                 pendings: {
@@ -111,6 +115,15 @@ export default function (state = initialState, { payload, type }) {
                     [payload.pend]: false
                 }
             };
+        case GROUP_EDITED:
+            return {
+                ...state,
+                groups: payload,
+                pendings: {
+                    ...state.pendings,
+                    'edit_group': false
+                }
+            };
         case TORUNAMENT_GROUPS_FETCHED:
         case TOURNAMENT_GROUP_GENERATED:
             return {
@@ -149,6 +162,7 @@ export default function (state = initialState, { payload, type }) {
         case ERROR_IN_TORUNAMENT_DELETE:
         case ERROR_IN_TOURNAMENT_EDIT:
         case ERROR_IN_MATCH_RESULT_UPDATE:
+        case ERROR_IN_GROUP_EDIT:
             return {
                 ...state,
                 pendings: {

@@ -17,7 +17,89 @@ const MatchesTable = ({
 		id: null,
 		teamA: null,
 		teamB: null
-	});
+    });
+    
+
+    const headers = () => {
+        if (action === 'get_matches') {
+            return [
+                {
+                    title: '#',
+                    dataIndex: 'key',
+                    key: 'key'
+                },
+                {
+                    title: 'Squadra A',
+                    dataIndex: 'teamA',
+                    key: 'teamA'
+                },
+                {
+                    title: 'Punti A',
+                    dataIndex: 'scoreA',
+                    key: 'scoreA',
+                    render: (text, record) => record.played ? text : '-'
+                },
+                {
+                    render: () => 'vs'
+                },
+                {
+                    title: 'Squadra B',
+                    dataIndex: 'teamB',
+                    key: 'teamB'
+                },
+                {
+                    title: 'Punti B',
+                    dataIndex: 'scoreB',
+                    key: 'scoreB',
+                    render: (text, record) => record.played ? text : '-'
+                },
+                {
+                    title: 'Azioni',
+                    render: (text, record) => (
+                        <span>
+                            <Button
+                                type="link"
+                                onClick={() => {
+                                    setActiveMatch(record);
+                                    setModalVisible(
+                                        true
+                                    );
+                                }}
+                                disabled={updateResult === null}
+                            >
+                                {record.played ? 'Modifica' : 'Risultato'}
+                            </Button>
+                        </span>
+                    )
+                }
+          ];
+        } else if (action === 'get_ranking') {
+            return [
+                {
+                    title: '#',
+                    dataIndex: 'key',
+                    key: 'key'
+                },
+                {
+                    title: 'Nome Squadra',
+                    dataIndex: 'name',
+                    key: 'name'
+                },
+                {
+                    title: 'Punteggio',
+                    dataIndex: 'score_group',
+                    key: 'score_group'
+                },
+                {
+                    title: 'Totale',
+                    dataIndex: 'points',
+                    key: 'points'
+                }
+          ];
+        } else {
+            return [];
+        }
+    }
 
 	return (
 		<Fragment>
@@ -93,82 +175,7 @@ const MatchesTable = ({
 									: 'Squadra non trovata'
 							};
 						}) : []}
-						columns={
-							action === 'get_matches'
-								? [
-										{
-											title: '#',
-											dataIndex: 'key',
-											key: 'key'
-										},
-										{
-											title: 'Squadra A',
-											dataIndex: 'teamA',
-											key: 'teamA'
-                                        },
-                                        {
-											title: 'Punti A',
-											dataIndex: 'scoreA',
-                                            key: 'scoreA',
-                                            render: (text, record) => record.played ? text : '-'
-										},
-										{
-											render: () => 'vs'
-										},
-										{
-											title: 'Squadra B',
-											dataIndex: 'teamB',
-											key: 'teamB'
-                                        },
-                                        {
-											title: 'Punti B',
-											dataIndex: 'scoreB',
-                                            key: 'scoreB',
-                                            render: (text, record) => record.played ? text : '-'
-										},
-										{
-											title: 'Azioni',
-											render: (text, record) => (
-												<span>
-													<Button
-														type="link"
-														onClick={() => {
-															setActiveMatch(record);
-															setModalVisible(
-																true
-															);
-                                                        }}
-                                                        disabled={updateResult === null}
-													>
-														{record.played ? 'Modifica' : 'Risultato'}
-													</Button>
-												</span>
-											)
-										}
-								  ]
-								: [
-										{
-											title: '#',
-											dataIndex: 'key',
-											key: 'key'
-										},
-										{
-											title: 'Nome Squadra',
-											dataIndex: 'name',
-											key: 'name'
-										},
-										{
-											title: 'Punteggio',
-											dataIndex: 'score_group',
-											key: 'score_group'
-                                        },
-                                        {
-                                            title: 'Totale',
-                                            dataIndex: 'points',
-                                            key: 'points'
-                                        }
-								  ]
-						}
+						columns={headers()}
 						locale={{
 							emptyText: (
 								<Empty

@@ -33,6 +33,9 @@ import {
 	UPDATE_MATCH_RESULT_PENDING,
 	MATCH_RESULT_UPDATED,
 	ERROR_IN_MATCH_RESULT_UPDATE,
+	EDIT_GROUP_PENDING,
+	GROUP_EDITED,
+	ERROR_IN_GROUP_EDIT
 } from './types';
 import store from '../store';
 import axios from 'axios';
@@ -373,6 +376,46 @@ export const fetchGroups = () => dispatch => {
 	);
 };
 
+export const editGroup = (group_id, name) => dispatch => {
+	dispatch({
+		type: EDIT_GROUP_PENDING,
+		payload: 'edit_group'
+	});
+
+	const { groups } = store.getState().tournament;
+
+	return new Promise((resolve, reject) =>
+		axios
+			.post(`${API_URL}/edit_group.php`, {
+                group_id, name
+            })
+			.then(({ data }) => {
+				if (data.code === 1) {
+					dispatch({
+						type: GROUP_EDITED,
+						payload: groups.map(group =>
+							group.id === group_id ? data.group : group
+						)
+                    });
+					resolve();
+				} else {
+					throw new Error(data.message || 'Errore sconosciuto');
+				}
+			})
+			.catch(err => {
+				const { response } = err;
+				if (response && response.data && response.data.message) {
+					err.message = response.data.message;
+				}
+				dispatch({
+					type: ERROR_IN_GROUP_EDIT,
+					payload: 'edit_group'
+				});
+				reject(err);
+			})
+	);
+};
+
 export const generateGroups = gcase => dispatch => {
 	dispatch({
 		type: GENERATE_TOURNAMENT_GROUP_PENDING,
@@ -408,42 +451,42 @@ export const generateGroups = gcase => dispatch => {
 };
 
 export const generatePlayoffGroups = (startTeams, extraTeams) => dispatch => {
-    dispatch({
+	dispatch({
 		type: GENERATE_TOURNAMENT_GROUP_PENDING,
 		payload: 'po_groups'
-    });
-    
-    const { groups } = store.getState().tournament;
+	});
 
-    return new Promise((resolve, reject) =>
-        axios
-            .post(`${API_URL}/generation_po.php`, {
-                teams: startTeams,
-                extra_teams: extraTeams
-            })
-            .then(({ data }) => {
-                if (data.code === 1) {
-                    dispatch({
-                        type: TOURNAMENT_GROUP_GENERATED,
-                        payload: [...groups, data.group]
-                    });
-                    resolve();
-                } else {
-                    throw new Error(data.message || 'Errore sconosciuto');
-                }
-            })
-            .catch(err => {
-                const { response } = err;
-                if (response && response.data && response.data.message) {
-                    err.message = response.data.message;
-                }
-                dispatch({
-                    type: ERROR_IN_GENERATE_TOURNAMENT_GROUPS,
-                    payload: 'po_groups'
-                });
-                reject(err);
-            })
-    );
+	const { groups } = store.getState().tournament;
+
+	return new Promise((resolve, reject) =>
+		axios
+			.post(`${API_URL}/generation_po.php`, {
+				teams: startTeams,
+				extra_teams: extraTeams
+			})
+			.then(({ data }) => {
+				if (data.code === 1) {
+					dispatch({
+						type: TOURNAMENT_GROUP_GENERATED,
+						payload: [...groups, data.group]
+					});
+					resolve();
+				} else {
+					throw new Error(data.message || 'Errore sconosciuto');
+				}
+			})
+			.catch(err => {
+				const { response } = err;
+				if (response && response.data && response.data.message) {
+					err.message = response.data.message;
+				}
+				dispatch({
+					type: ERROR_IN_GENERATE_TOURNAMENT_GROUPS,
+					payload: 'po_groups'
+				});
+				reject(err);
+			})
+	);
 };
 
 export const deleteTournament = () => dispatch => {
@@ -503,9 +546,9 @@ export const updateMatchResults = (id, scoreA, scoreB) => dispatch => {
 						type: MATCH_RESULT_UPDATED,
 						payload: {
 							list: teams.map(team => {
-                                if (team.id === data.teams[0].id) {
-                                    return data.teams[0];
-                                }
+								if (team.id === data.teams[0].id) {
+									return data.teams[0];
+								}
 								if (team.id === data.teams[1].id) {
 									return data.teams[1];
 								}
@@ -513,8 +556,8 @@ export const updateMatchResults = (id, scoreA, scoreB) => dispatch => {
 							}),
 							pend: 'match_result'
 						}
-                    });
-                    resolve();
+					});
+					resolve();
 				} else {
 					throw new Error(data.message || 'Errore sconosciuto');
 				}
