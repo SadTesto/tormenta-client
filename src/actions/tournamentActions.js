@@ -40,7 +40,7 @@ import {
 import store from '../store';
 import axios from 'axios';
 
-const API_URL = 'http://dev.tronweb.it/tormenta-server';
+const API_URL = 'https://dev.tronweb.it/tormenta-server';
 
 export const fetchInfo = () => dispatch => {
 	dispatch({
@@ -535,7 +535,7 @@ export const updateMatchResults = (id, scoreA, scoreB) => dispatch => {
 
 	return new Promise((resolve, reject) =>
 		axios
-			.post('http://dev.tronweb.it/tormenta-server/update_match.php', {
+			.post(`${API_URL}/update_match.php`, {
 				match_id: id,
 				scoreA,
 				scoreB

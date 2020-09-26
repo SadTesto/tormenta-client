@@ -43,7 +43,7 @@ const Dashboard = ({
 					{exists === true ? (
 						<Col span={24} xl={6}>
 							<Card bordered={true} title="Esporta">
-								<a href="http://dev.tronweb.it/tormenta-server/export_matches.php">
+								<a href="https://dev.tronweb.it/tormenta-server/export_matches.php">
 									Esporta rapido in csv
 								</a>
 							</Card>

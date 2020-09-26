@@ -13,7 +13,7 @@ const GenGroupCard = ({ onSubmit }) => {
     useEffect(() => {
         async function fetchOptions() {
             try {
-                const resp = await axios.get("http://dev.tronweb.it/tormenta-server/get_case.php");
+                const resp = await axios.get("https://dev.tronweb.it/tormenta-server/get_case.php");
                 const { data, response } = resp;
                 if (data && data.code === 1) {
                     setOptions(data.groups);

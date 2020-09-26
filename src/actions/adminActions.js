@@ -6,7 +6,7 @@ import {
 } from './types';
 import axios from 'axios';
 
-const API_URL = 'http://dev.tronweb.it/tormenta-server';
+const API_URL = 'https://dev.tronweb.it/tormenta-server';
 
 export const authAdmin = (username, password) => dispatch => {
     dispatch({

@@ -18,7 +18,7 @@ const StartTeamsCard = ({ setPoTeams }) => {
 				initialValues={{ teams: 2 }}
 				onSubmit={values => {
 					setFetching(true);
-					axios.get('http://dev.tronweb.it/tormenta-server/get_po_teams.php?teams=' +
+					axios.get('https://dev.tronweb.it/tormenta-server/get_po_teams.php?teams=' +
                             values.teams)
 						.then(({ data }) => {
 							if (data.code === 1) {

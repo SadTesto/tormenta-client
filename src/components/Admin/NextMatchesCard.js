@@ -16,7 +16,7 @@ const NextMatchesCard = ({ tournament }) => {
 			setFetching(true);
 			try {
 				const resp = await axios.get(
-					'http://dev.tronweb.it/tormenta-server/get_next_matches.php'
+					'https://dev.tronweb.it/tormenta-server/get_next_matches.php'
 				);
 				const { data } = resp;
 				if (data && data.code === 1) {

@@ -31,7 +31,7 @@ const Groups = ({
 			try {
 				setLoading(true);
 				const resp = await axios.get(
-					`http://dev.tronweb.it/tormenta-server/${activeGroup.action}.php?group_id=${activeGroup.id}`
+					`https://dev.tronweb.it/tormenta-server/${activeGroup.action}.php?group_id=${activeGroup.id}`
 				);
 				const { data, response } = resp;
 				setLoading(false);
